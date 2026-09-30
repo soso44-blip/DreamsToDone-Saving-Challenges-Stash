@@ -1,6 +1,6 @@
 /* Stash service worker.
    Bump CACHE on every redeploy or returning visitors keep the old files. */
-const CACHE = "stash-v1.0.0";
+const CACHE = "stash-v1.0.1";
 const PRECACHE = [
   "./",
   "./index.html",
