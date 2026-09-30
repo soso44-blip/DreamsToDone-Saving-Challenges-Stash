@@ -426,7 +426,9 @@ header{padding:22px 0 10px;display:flex;align-items:center;gap:12px}
   100%{opacity:0;transform:translate(-50%,-45%) scale(1) rotate(5deg)}}
 @media (prefers-reduced-motion:reduce){ .fxlabel,.fxbill{display:none} }
 footer{text-align:center;color:var(--micro);font-size:.76rem;padding:26px 10px 10px;line-height:1.7}
-footer a{color:var(--purple)}
+.foot-shop{display:block;margin-top:11px;font-weight:700;color:var(--dim);font-size:.82rem}
+footer a{color:var(--purple);font-weight:800;text-decoration:none}
+footer a:hover{text-decoration:underline}
 
 @media (max-width:480px){
   :root{--gutter:13px}
@@ -698,6 +700,7 @@ footer a{color:var(--purple)}
   <footer>
     Stash ✦ · your data stays in this browser. Nothing is uploaded, ever.<br>
     Back it up from ⚙ so a cleared browser never costs you your progress.
+    <span class="foot-shop">Made by <a href="https://dreamstodone.etsy.com" target="_blank" rel="noopener noreferrer">DreamsToDone</a> on Etsy ✦</span>
   </footer>
 </div>
 
@@ -2269,25 +2272,49 @@ function roundRect(x, X, Y, W, H, r){ r = Math.min(r, H / 2, W / 2); x.beginPath
   x.arcTo(X, Y + H, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); }
 
 /* ---------- cross-device transfer code (gzip + base64, no backend) ---------- */
-function b64FromBytes(u8){ var s = ""; for(var i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return btoa(s); }
-function bytesFromB64(b){ var s = atob(b), u = new Uint8Array(s.length); for(var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }
+/* URL-safe base64 out (no + / = so the code survives being pasted into any app, chat or URL) */
+function b64FromBytes(u8){ var s = ""; for(var i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]);
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+/* tolerant in: strips any whitespace a copy/paste added, accepts url-safe or standard, re-pads */
+function bytesFromB64(b){
+  b = String(b).replace(/\s+/g, "").replace(/-/g, "+").replace(/_/g, "/");
+  while(b.length % 4) b += "=";
+  var s = atob(b), u = new Uint8Array(s.length);
+  for(var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i);
+  return u;
+}
+function b64urlFromString(s){ return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+function utf8FromBytes(u8){
+  if(typeof TextDecoder === "function") return new TextDecoder().decode(u8);
+  var s = ""; for(var i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]);
+  return decodeURIComponent(escape(s));
+}
 function makeCode(str){
   if(typeof CompressionStream === "function"){
     var cs = new CompressionStream("gzip");
     var stream = new Blob([str]).stream().pipeThrough(cs);
     return new Response(stream).arrayBuffer().then(function(buf){ return "STASH1:" + b64FromBytes(new Uint8Array(buf)); });
   }
-  return Promise.resolve("STASH0:" + btoa(unescape(encodeURIComponent(str))));
+  return Promise.resolve("STASH0:" + b64urlFromString(unescape(encodeURIComponent(str))));
 }
+/* Always returns a Promise and never throws synchronously — atob() throws on bad
+   input, and a sync throw here would slip past the caller's .catch(), which is the
+   exact "click does nothing, no message" bug. Every failure now rejects instead. */
 function readCode(code){
-  code = String(code || "").trim();
-  if(code.indexOf("STASH1:") === 0 && typeof DecompressionStream === "function"){
-    var ds = new DecompressionStream("gzip");
-    var stream = new Blob([bytesFromB64(code.slice(7))]).stream().pipeThrough(ds);
-    return new Response(stream).text();
-  }
-  if(code.indexOf("STASH0:") === 0){ return Promise.resolve(decodeURIComponent(escape(atob(code.slice(7))))); }
-  return Promise.resolve(decodeURIComponent(escape(atob(code)))); /* tolerate raw base64 */
+  return new Promise(function(resolve, reject){
+    try{
+      code = String(code || "").replace(/\s+/g, "");
+      if(code.indexOf("STASH1:") === 0){
+        if(typeof DecompressionStream !== "function"){ reject(new Error("This code needs a newer browser. Open it in Chrome, Safari or Edge.")); return; }
+        var ds = new DecompressionStream("gzip");
+        var stream = new Blob([bytesFromB64(code.slice(7))]).stream().pipeThrough(ds);
+        resolve(new Response(stream).text());
+        return;
+      }
+      if(code.indexOf("STASH0:") === 0){ resolve(utf8FromBytes(bytesFromB64(code.slice(7)))); return; }
+      resolve(utf8FromBytes(bytesFromB64(code))); /* tolerate a raw, unprefixed code too */
+    }catch(e){ reject(e); }
+  });
 }
 $("doMakeCode").onclick = function(){
   writeNow();
@@ -2311,18 +2338,24 @@ $("doCopyCode").onclick = function(){
   } else { try{ document.execCommand("copy"); done(); }catch(e){ toast("Select the code and copy it"); } }
 };
 $("doImportCode").onclick = function(){
-  var code = $("codeBox").value.trim();
-  if(!code){ toast("Paste a code first"); return; }
-  readCode(code).then(function(json){
+  var code = $("codeBox").value.replace(/\s+/g, "");
+  if(!code){ toast("Paste your code first"); $("codeBox").focus(); return; }
+  /* route through Promise.resolve so even a synchronous throw becomes a rejection the
+     .catch below can show — never leave the button looking dead */
+  Promise.resolve().then(function(){ return readCode(code); }).then(function(json){
     var o = JSON.parse(json);
-    if(!isPlain(o)) throw 0;
+    if(!isPlain(o)) throw new Error("shape");
     ask("Bring this data in?", "Everything currently in Stash will be replaced by the transferred data. This cannot be undone.", function(){
       S = merge(fresh(), o); clean(); writeNow();
       paintTheme(); $("curSel").value = S.cur;
       setTab(S.tab || "env"); renderHero();
       closeAll(); bigCelebrate("goal"); toast("Brought across 🎉");
     }, "Replace everything");
-  }).catch(function(){ toast("That code could not be read. Check you copied all of it"); });
+  }).catch(function(err){
+    toast((err && err.message && err.message.indexOf("newer browser") !== -1)
+      ? err.message
+      : "That code could not be read. Copy the whole code and try again");
+  });
 };
 
 $("curSel").addEventListener("change", function(){
