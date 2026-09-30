@@ -1,0 +1,64 @@
+{
+  "name": "Stash · Savings Challenges",
+  "short_name": "Stash",
+  "description": "The 100 Envelope Challenge, 52 Week Challenge, a no-spend tracker and your own paced savings goal, in one private offline app.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "background_color": "#0d0b1e",
+  "theme_color": "#0d0b1e",
+  "orientation": "any",
+  "categories": [
+    "finance",
+    "lifestyle",
+    "productivity"
+  ],
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./screenshots/phone.png",
+      "sizes": "540x1136",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Your goal and challenges on a phone"
+    },
+    {
+      "src": "./screenshots/desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Stash in a browser window"
+    }
+  ]
+}

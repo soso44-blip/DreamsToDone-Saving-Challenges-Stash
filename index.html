@@ -1,0 +1,2642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0b1e">
+<meta name="description" content="Stash. The 100 Envelope Challenge, 52 Week Challenge, No-Spend tracker and your own savings goal, in one private offline file.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d0b1e'/%3E%3Ctext x='16' y='24' font-size='21' text-anchor='middle' fill='%23ff6eb4'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+<title>Stash · Savings Challenges</title>
+<style>
+:root{
+  /* ---- shared DreamsToDone dark palette ---- */
+  --bg:#0d0b1e;
+  --bg2:#151033;
+  --surface:#1a1535;
+  --surface2:#231d45;
+  --surface3:#2d2558;
+  --border:rgba(255,255,255,.08);
+  --border-str:rgba(255,255,255,.15);
+  --text:#f0e6ff;
+  --dim:#c3b6e0;
+  --micro:#a89ac9;
+  --muted:#9080b8;
+  --purple:#c77dff;
+  --pink:#ff6eb4;
+  --pink-soft:#ffb0d8;
+  --gold:#ffd166;
+  --teal:#00e5c8;
+  --teal-deep:#00b9a4;
+  --ink:#1a1535;
+  --ink-soft:rgba(26,21,53,.8);
+  --danger:#ff6eb4;
+  --danger-bg:rgba(255,110,180,.14);
+  --danger-bg2:rgba(255,110,180,.18);
+  --on-teal:#04231f;
+  --on-gold:#2d2005;
+  --gold-2:#f0b43f;
+  /* the gold FILL stays vivid in both themes (dark ink sits on it); --gold is
+     the gold used as TEXT, which has to darken on a light page */
+  --gold-fill:#ffd166;
+  --gold-fill-2:#f0b43f;
+  --warn-bg:rgba(255,209,102,.1);
+  --warn-br:rgba(255,209,102,.4);
+  --warn-txt:#ffe2a6;
+  --grad:linear-gradient(135deg,#c77dff 0%,#ff6eb4 100%);
+  --grad-txt:linear-gradient(135deg,#c77dff 0%,#ff6eb4 100%);
+  --grad-soft:linear-gradient(135deg,rgba(199,125,255,.22) 0%,rgba(255,110,180,.22) 100%);
+  --hero-glow:linear-gradient(135deg,rgba(199,125,255,.22) 0%,rgba(255,110,180,.22) 100%);
+  --shadow:0 8px 32px rgba(5,3,15,.7);
+  /* surfaces that used to be hardcoded — tokenised so themes reach them */
+  --inset:rgba(0,0,0,.35);
+  --input-bg:rgba(0,0,0,.3);
+  --chart-bg:rgba(0,0,0,.25);
+  --chip-bg:rgba(255,255,255,.05);
+  --shine:rgba(255,255,255,.28);
+  --scrim:rgba(6,4,16,.88);
+  --fx-shadow:0 2px 10px rgba(0,0,0,.55);
+  --glow:radial-gradient(60vw 40vh at 15% -5%, rgba(199,125,255,.16), transparent 70%),
+         radial-gradient(55vw 38vh at 90% 8%, rgba(255,110,180,.13), transparent 70%),
+         radial-gradient(45vw 30vh at 50% 105%, rgba(0,229,200,.07), transparent 70%);
+  --radius:18px;
+  --tap:44px;
+  --gutter:16px;
+}
+
+/* ---- light theme: same cosmic brand, daylight surfaces ---- */
+/* ---- Daylight: the cosmic palette on a light page ---- */
+:root[data-theme="daylight"]{
+  --bg:#f7f3ff; --bg2:#efe8fd; --surface:#ffffff; --surface2:#f6f1ff; --surface3:#eae0fb;
+  --border:rgba(74,45,120,.14); --border-str:rgba(74,45,120,.26);
+  --text:#271a45; --dim:#4e3c76; --micro:#6a5691; --muted:#695786;
+  --purple:#8324d4; --pink:#d11f79; --pink-soft:#b01e66;
+  --gold:#9a6b00; --teal:#00786a; --teal-deep:#005e53;
+  --ink:#1a1535; --ink-soft:rgba(26,21,53,.78); --on-teal:#ffffff; --on-gold:#2d2005;
+  --danger:#c4156c; --danger-bg:rgba(196,21,108,.10); --danger-bg2:rgba(196,21,108,.16);
+  --warn-bg:rgba(154,107,0,.10); --warn-br:rgba(154,107,0,.35); --warn-txt:#6d4b00;
+  --grad-txt:linear-gradient(135deg,#7b23c4 0%,#c4156c 100%);
+  --grad-soft:linear-gradient(135deg,rgba(199,125,255,.20) 0%,rgba(255,110,180,.18) 100%);
+  --hero-glow:linear-gradient(135deg,rgba(199,125,255,.13) 0%,rgba(255,110,180,.09) 100%);
+  --shadow:0 8px 26px rgba(80,50,140,.13);
+  --inset:rgba(74,45,120,.12); --input-bg:#ffffff; --chart-bg:rgba(74,45,120,.04);
+  --chip-bg:rgba(74,45,120,.05); --shine:rgba(255,255,255,.5); --scrim:rgba(45,28,80,.5);
+  --fx-shadow:0 2px 10px rgba(255,255,255,.85);
+  --glow:radial-gradient(60vw 40vh at 15% -5%, rgba(199,125,255,.13), transparent 70%),
+         radial-gradient(55vw 38vh at 90% 8%, rgba(255,110,180,.08), transparent 70%),
+         radial-gradient(45vw 30vh at 50% 105%, rgba(0,229,200,.07), transparent 70%);
+}
+
+/* ---- Midnight: cool blue/cyan on deep slate ---- */
+:root[data-theme="midnight"]{
+  --bg:#0a111c; --bg2:#0f1a2b; --surface:#121e30; --surface2:#1a2942; --surface3:#243654;
+  --border:rgba(160,200,255,.10); --border-str:rgba(160,200,255,.20);
+  --text:#e8f0fb; --dim:#b6c8e0; --micro:#93a9c6; --muted:#8299b6;
+  --purple:#5aa2ff; --pink:#2ad4ee; --pink-soft:#8ae8fa;
+  --gold:#f7c95c; --gold-fill:#f7c95c; --gold-fill-2:#e0a93c;
+  --teal:#34d399; --teal-deep:#0f9d72;
+  --ink:#06121f; --ink-soft:rgba(6,18,31,.78); --on-teal:#04231f; --on-gold:#2a1f04;
+  --danger:#ff8a8a; --danger-bg:rgba(255,138,138,.13); --danger-bg2:rgba(255,138,138,.18);
+  --warn-bg:rgba(247,201,92,.10); --warn-br:rgba(247,201,92,.38); --warn-txt:#ffe3a6;
+  --grad:linear-gradient(135deg,#5aa2ff 0%,#2ad4ee 100%);
+  --grad-txt:linear-gradient(135deg,#5aa2ff 0%,#2ad4ee 100%);
+  --grad-soft:linear-gradient(135deg,rgba(90,162,255,.22) 0%,rgba(42,212,238,.18) 100%);
+  --hero-glow:linear-gradient(135deg,rgba(90,162,255,.22) 0%,rgba(42,212,238,.18) 100%);
+  --shadow:0 8px 32px rgba(2,8,18,.7);
+  --inset:rgba(0,0,0,.35); --input-bg:rgba(0,0,0,.28); --chart-bg:rgba(0,0,0,.22);
+  --chip-bg:rgba(255,255,255,.05); --shine:rgba(255,255,255,.28); --scrim:rgba(4,10,20,.88);
+  --fx-shadow:0 2px 10px rgba(0,0,0,.55);
+  --glow:radial-gradient(60vw 40vh at 15% -5%, rgba(90,162,255,.16), transparent 70%),
+         radial-gradient(55vw 38vh at 90% 8%, rgba(42,212,238,.12), transparent 70%),
+         radial-gradient(45vw 30vh at 50% 105%, rgba(52,211,153,.08), transparent 70%);
+}
+
+/* ---- Steel: the same cool palette on a light page ---- */
+:root[data-theme="steel"]{
+  --bg:#f1f5fa; --bg2:#e7eef7; --surface:#ffffff; --surface2:#f2f6fb; --surface3:#e3ebf4;
+  --border:rgba(20,45,80,.14); --border-str:rgba(20,45,80,.26);
+  --text:#112031; --dim:#2f4763; --micro:#4a6280; --muted:#4f6785;
+  --purple:#1466cc; --pink:#0d7490; --pink-soft:#0a5f77;
+  --gold:#8a6100; --gold-fill:#f7c95c; --gold-fill-2:#e0a93c;
+  --teal:#0f766e; --teal-deep:#115e59;
+  --ink:#06121f; --ink-soft:rgba(6,18,31,.78); --on-teal:#ffffff; --on-gold:#2a1f04;
+  --danger:#b3261e; --danger-bg:rgba(179,38,30,.09); --danger-bg2:rgba(179,38,30,.15);
+  --warn-bg:rgba(138,97,0,.10); --warn-br:rgba(138,97,0,.35); --warn-txt:#63460a;
+  --grad:linear-gradient(135deg,#5aa2ff 0%,#2ad4ee 100%);
+  --grad-txt:linear-gradient(135deg,#1466cc 0%,#0d7490 100%);
+  --grad-soft:linear-gradient(135deg,rgba(90,162,255,.20) 0%,rgba(42,212,238,.16) 100%);
+  --hero-glow:linear-gradient(135deg,rgba(90,162,255,.14) 0%,rgba(42,212,238,.09) 100%);
+  --shadow:0 8px 26px rgba(30,60,100,.13);
+  --inset:rgba(20,45,80,.12); --input-bg:#ffffff; --chart-bg:rgba(20,45,80,.04);
+  --chip-bg:rgba(20,45,80,.05); --shine:rgba(255,255,255,.5); --scrim:rgba(15,35,60,.5);
+  --fx-shadow:0 2px 10px rgba(255,255,255,.85);
+  --glow:radial-gradient(60vw 40vh at 15% -5%, rgba(90,162,255,.14), transparent 70%),
+         radial-gradient(55vw 38vh at 90% 8%, rgba(42,212,238,.09), transparent 70%),
+         radial-gradient(45vw 30vh at 50% 105%, rgba(52,211,153,.07), transparent 70%);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Nunito,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:16px;line-height:1.5;
+  min-height:100vh;min-height:100dvh;
+  overflow-x:hidden;
+  -webkit-text-size-adjust:100%;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:var(--glow);
+}
+body.lock{overflow:hidden}
+.wrap{
+  position:relative;z-index:1;max-width:820px;margin:0 auto;
+  padding-left:max(var(--gutter),env(safe-area-inset-left));
+  padding-right:max(var(--gutter),env(safe-area-inset-right));
+  padding-bottom:calc(110px + env(safe-area-inset-bottom));
+}
+button{font:inherit;color:inherit;cursor:pointer;border:none;background:none}
+input,select{font:inherit}
+:focus-visible{outline:2px solid var(--pink-soft);outline-offset:2px;border-radius:8px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.print-only{display:none}
+
+/* ---------- header ---------- */
+header{padding:22px 0 8px;display:flex;align-items:center;gap:12px}
+.logo{font-size:1.45rem;font-weight:800;letter-spacing:-.02em;
+  background:var(--grad-txt);-webkit-background-clip:text;background-clip:text;color:transparent}
+.logo span{font-weight:400;-webkit-text-fill-color:var(--pink);color:var(--pink);opacity:.9}
+.hdr-btns{margin-left:auto;display:flex;gap:8px}
+.icon-btn{width:var(--tap);height:var(--tap);border-radius:12px;background:var(--surface);
+  border:1px solid var(--border);display:grid;place-items:center;font-size:1.05rem;transition:.18s}
+.icon-btn:hover{background:var(--surface2);transform:translateY(-1px)}
+@media (max-width:430px){
+  header{gap:8px}
+  .hdr-btns{gap:6px}
+  .icon-btn{width:38px;height:38px;font-size:.98rem;border-radius:11px}
+  .logo{font-size:1.28rem}
+}
+
+/* ---------- hero ---------- */
+.hero{background:linear-gradient(160deg,var(--surface) 0%,var(--bg2) 100%);
+  border:1px solid var(--border);border-radius:24px;padding:22px;margin:10px 0 18px;
+  box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;top:-60%;right:-20%;width:70%;height:200%;
+  background:var(--hero-glow);filter:blur(40px);pointer-events:none}
+.hero>*{position:relative;z-index:1}
+.hero-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--micro);font-weight:700}
+.hero-total{font-size:2.9rem;font-weight:800;letter-spacing:-.03em;line-height:1.05;margin:6px 0 2px;
+  background:var(--grad-txt);-webkit-background-clip:text;background-clip:text;color:transparent;
+  overflow-wrap:anywhere}
+.hero-sub{color:var(--dim);font-size:.92rem}
+.bar{height:14px;border-radius:99px;background:var(--inset);border:1px solid var(--border);
+  margin-top:16px;overflow:hidden;position:relative}
+.bar-fill{height:100%;background:var(--grad);border-radius:99px;width:0;
+  transition:width .7s cubic-bezier(.22,1,.36,1);position:relative}
+.bar-fill::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,var(--shine),transparent);
+  animation:shine 2.6s ease-in-out infinite}
+@keyframes shine{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+.bar-row{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:.82rem;color:var(--micro)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{background:var(--chip-bg);border:1px solid var(--border);border-radius:99px;
+  padding:5px 11px;font-size:.74rem;font-weight:700;color:var(--dim);white-space:nowrap}
+.chip b{font-weight:800;color:var(--text)}
+.chip.ns{border-color:rgba(0,229,200,.3);color:var(--teal)}
+.chip.ns b{color:var(--teal)}
+
+/* ---------- tabs ---------- */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+.tab{padding:11px 6px;border-radius:14px;background:var(--surface);border:1px solid var(--border);
+  font-size:.76rem;font-weight:700;color:var(--muted);transition:.18s;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:4px;min-height:var(--tap);justify-content:center}
+.tab .ti{font-size:1.15rem;line-height:1}
+.tab:hover{background:var(--surface2);color:var(--text)}
+.tab[aria-selected="true"]{background:var(--grad);color:var(--ink);border-color:transparent;font-weight:800;
+  box-shadow:0 4px 18px rgba(255,110,180,.28)}
+
+/* ---------- cards ---------- */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:18px;margin-bottom:14px}
+.card h2{margin:0 0 4px;font-size:1.05rem;font-weight:800;letter-spacing:-.01em}
+.card p.hint{margin:0 0 14px;color:var(--micro);font-size:.85rem}
+.card p.hint b{color:var(--dim);font-weight:800}
+.feed{margin:0 0 14px;padding:9px 13px;border-radius:11px;font-size:.82rem;line-height:1.45;
+  background:var(--grad-soft);border:1px solid rgba(199,125,255,.32);color:var(--dim)}
+.feed b{color:var(--pink-soft);font-weight:800}
+.pace{margin-top:14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:.88rem;color:var(--dim)}
+.pace .rate{font-weight:700;color:var(--text)}
+.pace .status{margin-left:auto;font-weight:800;font-size:.82rem;padding:5px 12px;border-radius:99px;white-space:nowrap}
+.pace .status.ok{background:rgba(0,229,200,.16);color:var(--teal);border:1px solid rgba(0,229,200,.4)}
+.pace .status.behind{background:rgba(255,209,102,.14);color:var(--gold);border:1px solid rgba(255,209,102,.4)}
+.pace .status.done{background:var(--grad);color:var(--ink);border:1px solid transparent}
+.sect-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sect-head h2{margin:0}
+.pill{margin-left:auto;background:var(--surface2);border:1px solid var(--border);
+  padding:5px 11px;border-radius:99px;font-size:.78rem;color:var(--dim);font-weight:700;white-space:nowrap}
+
+/* ---------- buttons ---------- */
+.btn{background:var(--grad);color:var(--ink);font-weight:800;padding:13px 20px;border-radius:14px;
+  min-height:var(--tap);transition:.18s;box-shadow:0 4px 16px rgba(255,110,180,.25);font-size:.95rem}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,110,180,.38)}
+.btn:active{transform:translateY(0)}
+.btn-ghost{background:var(--surface2);color:var(--text);border:1px solid var(--border);
+  font-weight:700;padding:11px 16px;border-radius:12px;min-height:var(--tap);transition:.18s;font-size:.9rem}
+.btn-ghost:hover{background:var(--surface3)}
+.btn-danger{color:var(--danger);border-color:var(--danger-bg2)}
+.btn-danger:hover{background:var(--danger-bg)}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+
+/* ---------- envelope + week grids ---------- */
+.grid-env{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:7px}
+.grid-week{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:7px}
+.cell{aspect-ratio:1;border-radius:12px;background:var(--surface2);border:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  font-size:.82rem;font-weight:800;color:var(--dim);transition:transform .16s,background .16s;position:relative}
+.cell small{font-size:.6rem;font-weight:700;color:var(--micro);letter-spacing:.02em}
+.cell:hover{background:var(--surface3);transform:translateY(-2px)}
+.cell[aria-pressed="true"]{background:var(--grad);color:var(--ink);border-color:transparent;
+  box-shadow:0 3px 12px rgba(199,125,255,.28)}
+.cell[aria-pressed="true"] small{color:var(--ink-soft)}
+.cell[aria-pressed="true"]::after{content:"✓";position:absolute;top:2px;right:5px;font-size:.62rem;opacity:.75}
+.cell.pulse{animation:pop .45s cubic-bezier(.22,1.4,.5,1)}
+@keyframes pop{0%{transform:scale(1)}45%{transform:scale(1.18)}100%{transform:scale(1)}}
+.cell.hilite{box-shadow:0 0 0 3px var(--gold-fill),0 0 22px rgba(255,209,102,.5);z-index:2}
+.grid-bingo{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.grid-bingo .cell{font-size:.78rem}
+.grid-bingo .cell.free{background:var(--grad-soft);border-color:var(--purple);color:var(--pink-soft);cursor:default}
+.grid-bingo .cell.free:hover{transform:none;background:var(--grad-soft)}
+.grid-bingo .cell.inline-win{box-shadow:0 0 0 2px var(--gold-fill),0 0 18px rgba(255,209,102,.45)}
+.sw-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 16px}
+@media (max-width:380px){ .sw-list{grid-template-columns:1fr} }
+.sw{display:flex;align-items:center;gap:11px;text-align:left;border-radius:15px;padding:11px 12px;
+  background:var(--surface2);border:1px solid var(--border-str);min-height:var(--tap);transition:.16s}
+.sw:hover{transform:translateY(-1px);border-color:var(--purple)}
+.sw[aria-pressed="true"]{border-color:var(--purple);box-shadow:0 0 0 2px var(--purple)}
+.sw-dot{width:32px;height:32px;border-radius:11px;flex-shrink:0}
+.sw-txt{min-width:0}
+.sw-name{display:block;font-weight:800;font-size:.9rem;color:var(--text);line-height:1.2}
+.sw-sub{display:block;font-size:.7rem;color:var(--micro);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.toggle{display:flex;align-items:center;gap:10px;font-size:.86rem;color:var(--dim);cursor:pointer;
+  min-height:var(--tap);user-select:none}
+.toggle input{width:20px;height:20px;accent-color:var(--purple);flex-shrink:0;cursor:pointer}
+
+/* ---------- no-spend calendar ---------- */
+.cal-head{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px}
+.cal-head div{text-align:center;font-size:.68rem;color:var(--micro);font-weight:800;
+  text-transform:uppercase;letter-spacing:.06em}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{aspect-ratio:1;border-radius:11px;background:var(--surface2);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:800;color:var(--dim);transition:.16s;position:relative}
+.day.blank{background:none;border:none;pointer-events:none}
+.day:hover:not(.blank){transform:translateY(-2px);background:var(--surface3)}
+.day.no{background:linear-gradient(135deg,var(--teal),var(--teal-deep));color:var(--on-teal);border-color:transparent}
+.day.spend{background:var(--surface3);color:var(--muted);border-color:var(--border)}
+.day.spend::after{content:"";position:absolute;bottom:6px;width:16px;height:2px;
+  border-radius:2px;background:var(--muted);opacity:.7}
+.day.ess{background:linear-gradient(135deg,var(--gold-fill),var(--gold-fill-2));color:var(--on-gold);border-color:transparent}
+.day.today{box-shadow:0 0 0 2px var(--pink)}
+.day.future{opacity:.45}
+.day.pulse{animation:pop .45s cubic-bezier(.22,1.4,.5,1)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:.76rem;color:var(--dim)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+
+/* ---------- stats ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.stats.four{grid-template-columns:repeat(2,1fr)}
+@media (min-width:560px){ .stats.four{grid-template-columns:repeat(4,1fr)} }
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:13px 12px;text-align:center}
+.stat b{display:block;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;line-height:1.1;overflow-wrap:anywhere}
+.stat span{font-size:.68rem;color:var(--micro);text-transform:uppercase;letter-spacing:.09em;font-weight:800}
+.stat.flame b{color:var(--gold)}
+.stat.teal b{color:var(--teal)}
+.stat.pk b{color:var(--pink)}
+.stat.pur b{color:var(--purple)}
+
+/* ---------- inputs ---------- */
+.field{margin-bottom:13px}
+.field label{display:block;font-size:.74rem;color:var(--micro);margin-bottom:6px;
+  font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.field input,.field select{width:100%;background:var(--input-bg);border:1px solid var(--border-str);
+  color:var(--text);padding:12px 14px;border-radius:12px;min-height:var(--tap)}
+.field input::placeholder{color:var(--muted)}
+.field input:focus,.field select:focus{border-color:var(--purple);outline:none}
+.inline{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+
+/* ---------- deposits ---------- */
+.dep{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.dep:last-child{border-bottom:none}
+.dep-amt{font-weight:800;color:var(--teal);font-size:1.02rem;min-width:74px}
+.dep-body{flex:1;min-width:0}
+.dep-note{font-size:.9rem;color:var(--text);overflow-wrap:anywhere}
+.dep-date{font-size:.74rem;color:var(--micro)}
+.dep-del{width:36px;height:36px;border-radius:9px;background:var(--surface2);color:var(--muted);
+  display:grid;place-items:center;font-size:.9rem;flex-shrink:0;transition:.16s}
+.dep-del:hover{background:var(--danger-bg2);color:var(--danger)}
+.empty{text-align:center;padding:26px 14px;color:var(--micro);font-size:.9rem}
+.empty div{font-size:2rem;margin-bottom:8px;opacity:.55}
+
+/* ---------- milestones ---------- */
+.miles{display:flex;gap:8px;flex-wrap:wrap}
+.mile{flex:1;min-width:66px;text-align:center;padding:11px 6px;border-radius:13px;
+  background:var(--surface2);border:1px solid var(--border);transition:.2s}
+.mile b{display:block;font-size:1.3rem;line-height:1.2;filter:grayscale(1);opacity:.35}
+.mile span{font-size:.68rem;color:var(--micro);font-weight:800}
+.mile.hit{background:var(--grad-soft);border-color:var(--purple)}
+.mile.hit b{filter:none;opacity:1}
+.mile.hit span{color:var(--pink-soft)}
+
+/* ---------- banner / toast / modal ---------- */
+.warn{background:var(--warn-bg);border:1px solid var(--warn-br);color:var(--warn-txt);
+  padding:13px 15px;border-radius:14px;margin:12px 0;font-size:.86rem;line-height:1.5}
+.warn b{color:var(--gold)}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom));
+  transform:translateX(-50%) translateY(180%);
+  background:var(--surface3);border:1px solid var(--purple);color:var(--text);
+  padding:11px 16px;border-radius:99px;font-weight:700;font-size:.92rem;z-index:99;
+  box-shadow:var(--shadow);transition:transform .4s cubic-bezier(.22,1,.36,1);
+  max-width:calc(100vw - 32px);text-align:center;display:flex;align-items:center;gap:12px;
+  opacity:0;pointer-events:none;transition:transform .4s cubic-bezier(.22,1,.36,1),opacity .25s}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
+.toast-msg{flex:1;min-width:0}
+.toast-act{background:var(--grad);color:var(--ink);font-weight:800;font-size:.82rem;
+  padding:7px 13px;border-radius:99px;flex-shrink:0;display:none}
+.toast.has-act .toast-act{display:block}
+.modal{position:fixed;inset:0;background:var(--scrim);z-index:100;display:none;
+  align-items:center;justify-content:center;padding:18px;overflow-y:auto;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--border-str);border-radius:22px;
+  padding:24px;max-width:460px;width:100%;box-shadow:var(--shadow);margin:auto}
+.modal-box h3{margin:0 0 6px;font-size:1.18rem}
+.modal-box p{color:var(--dim);font-size:.88rem;margin:0 0 16px;line-height:1.55}
+.modal-box.wide{max-width:520px}
+.msep{border:none;border-top:1px solid var(--border);margin:18px 0}
+.mh{font-size:.98rem;font-weight:800;margin:0 0 4px;color:var(--text)}
+.mp{font-size:.82rem;color:var(--dim);margin:0 0 12px;line-height:1.5}
+.codebox{width:100%;height:78px;resize:none;background:var(--input-bg);border:1px solid var(--border-str);
+  color:var(--text);border-radius:12px;padding:10px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.72rem;word-break:break-all;line-height:1.4}
+.chartwrap{position:relative;background:var(--chart-bg);border:1px solid var(--border);border-radius:14px;
+  padding:8px;height:180px}
+.chartwrap canvas{width:100%;height:100%;display:block}
+.chart-empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  color:var(--micro);font-size:.86rem;text-align:center;padding:0 20px}
+.chart-empty[hidden]{display:none}
+.note-box{background:var(--grad-soft);border:1px solid rgba(199,125,255,.35);border-radius:14px;
+  padding:12px 14px;font-size:.85rem;color:var(--text);line-height:1.55;margin:0 0 16px}
+.note-box b{color:var(--pink-soft)}
+.wc-list{display:flex;flex-direction:column;gap:9px;margin:0 0 16px}
+.wc{display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+  background:var(--surface2);border:1px solid var(--border-str);border-radius:15px;
+  padding:13px 15px;min-height:var(--tap);transition:.16s}
+.wc:hover{background:var(--surface3);transform:translateY(-1px);border-color:var(--purple)}
+.wc-ico{font-size:1.5rem;line-height:1;flex-shrink:0;width:30px;text-align:center}
+.wc-txt{min-width:0}
+.wc-txt b{display:block;font-size:.98rem;font-weight:800;color:var(--text);margin-bottom:1px}
+.wc-txt span{font-size:.8rem;color:var(--dim);line-height:1.4}
+.wc-txt span em{font-style:normal;color:var(--teal);font-weight:700}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:98}
+.fxlabel{position:fixed;z-index:97;pointer-events:none;font-weight:800;font-size:1.05rem;
+  color:var(--pink-soft);text-shadow:var(--fx-shadow);will-change:transform,opacity;
+  transform:translate(-50%,-50%);animation:floatUp 1s ease-out forwards}
+@keyframes floatUp{
+  0%{opacity:0;transform:translate(-50%,-20%) scale(.8)}
+  22%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-175%) scale(1.05)}}
+.fxbill{position:fixed;z-index:97;pointer-events:none;font-size:1.5rem;will-change:transform,opacity;
+  transform:translate(-50%,-50%);animation:dropIn .55s cubic-bezier(.35,1.3,.6,1) forwards}
+@keyframes dropIn{
+  0%{opacity:0;transform:translate(-50%,-240%) scale(.7) rotate(-10deg)}
+  45%{opacity:1}
+  100%{opacity:0;transform:translate(-50%,-45%) scale(1) rotate(5deg)}}
+@media (prefers-reduced-motion:reduce){ .fxlabel,.fxbill{display:none} }
+footer{text-align:center;color:var(--micro);font-size:.76rem;padding:26px 10px 10px;line-height:1.7}
+footer a{color:var(--purple)}
+
+@media (max-width:480px){
+  :root{--gutter:13px}
+  .hero-total{font-size:2.3rem}
+  .hero{padding:18px}
+  .card{padding:15px}
+  .tab{font-size:.67rem}
+  .tab .ti{font-size:1.05rem}
+  .grid-env{grid-template-columns:repeat(auto-fill,minmax(50px,1fr));gap:6px}
+  .grid-week{grid-template-columns:repeat(auto-fill,minmax(56px,1fr));gap:6px}
+  .cal,.cal-head{gap:5px}
+  .stat b{font-size:1.3rem}
+}
+@media (min-width:760px){
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+  .two-col>.card{margin-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+@media print{
+  @page{margin:14mm}
+  body{background:#fff;color:#000}
+  body::before,#fx,.toast,.modal{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .print-only{display:block}
+  .tabs,.hdr-btns,.btn,.btn-ghost,.dep-del,.icon-btn,.legend{display:none!important}
+  .wrap section[hidden]{display:block!important}
+  .card,.hero{border:1px solid #bbb;box-shadow:none;background:#fff;color:#000;
+    break-inside:avoid;page-break-inside:avoid;margin-bottom:10px}
+  .hero::after{display:none}
+  .hero-total,.logo{-webkit-text-fill-color:#000;color:#000;background:none}
+  .chip,.pill,.stat,.cell,.day,.mile{background:#fff!important;color:#000!important;
+    border:1px solid #bbb!important;box-shadow:none!important}
+  .cell[aria-pressed="true"],.day.no{background:#ddd!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cell[aria-pressed="true"] small,.stat span,.card p.hint,.dep-date{color:#444!important}
+  .bar{border:1px solid #bbb}
+  .bar-fill{background:#888!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .dep-amt{color:#000!important}
+  footer{color:#666}
+}
+</style>
+
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Stash">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+
+  <header>
+    <div class="logo">Stash <span aria-hidden="true">✦</span></div>
+    <div class="hdr-btns">
+      <button class="icon-btn" id="btnHelp" title="How Stash works" aria-label="How Stash works"><span aria-hidden="true">?</span></button>
+      <button class="icon-btn" id="btnProg" title="Your progress" aria-label="Your progress"><span aria-hidden="true">📈</span></button>
+      <button class="icon-btn" id="btnTheme" title="Choose your look" aria-label="Choose your look"><span aria-hidden="true">🎨</span></button>
+      <button class="icon-btn" id="btnData" title="Backup and settings" aria-label="Backup and settings"><span aria-hidden="true">⚙</span></button>
+    </div>
+  </header>
+
+  <div id="storeWarn"></div>
+
+  <div class="print-only" id="printHead"></div>
+
+  <div class="hero">
+    <div class="hero-label" id="heroLabel">Total saved</div>
+    <div class="hero-total" id="heroTotal">$0</div>
+    <div class="hero-sub" id="heroSub">Pick a challenge below and save your first envelope.</div>
+    <div class="bar" hidden><div class="bar-fill" id="heroBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress towards your goal"></div></div>
+    <div class="bar-row" id="heroBarRow" hidden><span id="heroPct">0%</span><span id="heroGoal"></span></div>
+    <div class="chips" id="heroChips"></div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Savings challenges">
+    <button class="tab" role="tab" id="t-env" aria-controls="p-env" aria-selected="true" data-tab="env"><span class="ti" aria-hidden="true">✉️</span>100 Envelopes</button>
+    <button class="tab" role="tab" id="t-wk" aria-controls="p-wk" aria-selected="false" data-tab="wk"><span class="ti" aria-hidden="true">📅</span>52 Weeks</button>
+    <button class="tab" role="tab" id="t-ns" aria-controls="p-ns" aria-selected="false" data-tab="ns"><span class="ti" aria-hidden="true">⏸️</span>No-Spend</button>
+    <button class="tab" role="tab" id="t-goal" aria-controls="p-goal" aria-selected="false" data-tab="goal"><span class="ti" aria-hidden="true">⭐</span>My Goal</button>
+  </div>
+
+  <!-- ENVELOPES -->
+  <section id="p-env" role="tabpanel" aria-labelledby="t-env" tabindex="-1">
+    <div class="card">
+      <div class="sect-head">
+        <h2>100 Envelope Challenge</h2>
+        <span class="pill" id="envPill">0 / 100</span>
+      </div>
+      <p class="hint">Each envelope is worth its own number. When you save that amount for real, tap the envelope to mark it done. A full round is <span id="envGoalTxt">$5,050</span>. Finish it and you can start again. Don't want to choose? Tap <b>Pick one for me</b>.</p>
+      <p class="feed" id="feedEnv" hidden></p>
+      <div class="stats">
+        <div class="stat pk"><b id="envSaved">$0</b><span>Stashed</span></div>
+        <div class="stat"><b id="envLeft">100</b><span>To go</span></div>
+        <div class="stat teal"><b id="envNext">$0</b><span>Next up</span></div>
+      </div>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn" id="envRandom">🎲 Pick one for me</button>
+        <button class="btn-ghost" id="envSmall">Smallest left</button>
+        <button class="btn-ghost btn-danger" id="envReset">Reset</button>
+      </div>
+      <div class="grid-env" id="envGrid" role="group" aria-label="Envelopes 1 to 100"></div>
+      <p class="hint" style="margin:12px 0 0">Tip: on a keyboard, use the arrow keys to move around the grid and space to fill an envelope.</p>
+    </div>
+    <div class="card">
+      <h2>Milestones</h2>
+      <p class="hint">Small wins on the way to <span id="envGoalTxt2">$5,050</span>.</p>
+      <div class="miles" id="envMiles"></div>
+    </div>
+  </section>
+
+  <!-- 52 WEEKS -->
+  <section id="p-wk" role="tabpanel" aria-labelledby="t-wk" tabindex="-1" hidden>
+    <div class="card">
+      <div class="sect-head">
+        <h2>52 Week Challenge</h2>
+        <span class="pill" id="wkPill">0 / 52</span>
+      </div>
+      <p class="hint">Week 1 you save 1, week 2 you save 2, all the way to 52. A full year adds up to <span id="wkGoalTxt">$1,378</span>, and you can tick weeks in any order you like.</p>
+      <p class="feed" id="feedWk" hidden></p>
+      <div class="stats">
+        <div class="stat pk"><b id="wkSaved">$0</b><span>Stashed</span></div>
+        <div class="stat"><b id="wkLeft">52</b><span>Weeks left</span></div>
+        <div class="stat teal"><b id="wkNext">$0</b><span>Up next</span></div>
+      </div>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn" id="wkNextBtn">✓ Tick next week</button>
+        <button class="btn-ghost" id="wkFlip">Flip order (high first)</button>
+        <button class="btn-ghost btn-danger" id="wkReset">Reset</button>
+      </div>
+      <div class="grid-week" id="wkGrid" role="group" aria-label="Weeks 1 to 52"></div>
+    </div>
+    <div class="card">
+      <h2>Milestones</h2>
+      <p class="hint">Small wins on the way to <span id="wkGoalTxt2">$1,378</span>.</p>
+      <div class="miles" id="wkMiles"></div>
+    </div>
+  </section>
+
+  <!-- NO SPEND -->
+  <section id="p-ns" role="tabpanel" aria-labelledby="t-ns" tabindex="-1" hidden>
+    <div class="card">
+      <div class="sect-head">
+        <h2 id="nsTitle">No-Spend Month</h2>
+        <span class="pill" id="nsPill">0 no-spend days</span>
+      </div>
+      <p class="hint">Each tap changes a day: 1st tap marks it <b>no-spend</b> 🟢, tap again for <b>essentials only</b> 🟡, again for <b>spent</b>, once more to clear it. Miss a day? Nothing is lost.</p>
+      <p class="feed" id="feedNs" hidden></p>
+      <div class="stats four">
+        <div class="stat teal"><b id="nsDays">0</b><span>This month</span></div>
+        <div class="stat flame"><b id="nsStreak">0</b><span>Streak</span></div>
+        <div class="stat"><b id="nsBest">0</b><span>Best run</span></div>
+        <div class="stat pur"><b id="nsSaved">$0</b><span>Not spent</span></div>
+      </div>
+      <div class="btn-row" style="margin-bottom:16px">
+        <button class="btn-ghost" id="nsPrev" aria-label="Previous month">← Prev</button>
+        <button class="btn-ghost" id="nsToday">Today</button>
+        <button class="btn-ghost" id="nsNext" aria-label="Next month">Next →</button>
+      </div>
+      <div class="cal-head" aria-hidden="true"><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div><div>S</div></div>
+      <div class="cal" id="nsCal" role="group" aria-label="Calendar of days"></div>
+      <div class="legend">
+        <span><i style="background:linear-gradient(135deg,var(--teal),var(--teal-deep))"></i>No-spend</span>
+        <span><i style="background:linear-gradient(135deg,var(--gold-fill),var(--gold-fill-2))"></i>Essentials only</span>
+        <span><i style="background:var(--surface3);border:1px solid var(--border)"></i>Spent</span>
+      </div>
+      <div class="field" style="margin-top:18px;margin-bottom:0">
+        <label for="nsRate">What a normal spending day costs you</label>
+        <input type="number" id="nsRate" min="0" step="1" inputmode="decimal" placeholder="25">
+      </div>
+      <p class="hint" style="margin:10px 0 0">“Not spent” is an estimate: your no-spend days multiplied by that figure, across every month. It is kept separate from your challenge totals above, because it is money you did not spend rather than money you put away.</p>
+    </div>
+  </section>
+
+  <!-- MY GOAL -->
+  <section id="p-goal" role="tabpanel" aria-labelledby="t-goal" tabindex="-1" hidden>
+    <div class="card">
+      <div class="sect-head">
+        <h2>My Goal</h2>
+        <span class="pill" id="goalPill">not set yet</span>
+      </div>
+      <p class="hint">Tell Stash what you're saving for, how much, and by when. It builds you a <b>custom challenge</b>, a grid of amounts that adds up to exactly your goal, paced to your deadline.</p>
+      <div class="field">
+        <label for="goalName">What are you saving for?</label>
+        <input type="text" id="goalName" placeholder="Emergency fund, Japan trip, new laptop…" maxlength="60" autocomplete="off">
+      </div>
+      <div class="inline" style="grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field" style="margin:0">
+          <label for="goalTarget">Amount</label>
+          <input type="number" id="goalTarget" min="1" step="1" inputmode="decimal" placeholder="1000">
+        </div>
+        <div class="field" style="margin:0">
+          <label for="goalWhen">Finish in</label>
+          <div style="display:grid;grid-template-columns:1fr 1.3fr;gap:6px">
+            <input type="number" id="goalDur" min="1" max="104" step="1" inputmode="numeric" placeholder="3">
+            <select id="goalUnit" aria-label="Time unit">
+              <option value="w">weeks</option>
+              <option value="m" selected>months</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:13px;margin-bottom:0">
+        <label for="goalStyle">Choose your challenge</label>
+        <select id="goalStyle">
+          <option value="climb">🧗 Climb · small boxes up to big</option>
+          <option value="steady">⚖️ Steady · same amount each box</option>
+          <option value="weekly">📅 Weekly · one box per week</option>
+          <option value="bingo">🎱 Bingo · card with line bonuses</option>
+        </select>
+        <p class="hint" id="goalTypeHint" style="margin:7px 0 0" hidden></p>
+      </div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn" id="goalBuild">✦ Build my challenge</button>
+        <button class="btn-ghost btn-danger" id="goalClear" hidden>Clear goal</button>
+      </div>
+    </div>
+
+    <div class="card" id="goalPlanCard" hidden>
+      <div class="sect-head">
+        <h2 id="goalPlanTitle">Your challenge</h2>
+        <span class="pill" id="goalPct">0%</span>
+      </div>
+      <p class="hint" id="goalStyleNote" style="margin:-6px 0 12px"></p>
+      <div class="bar" style="margin-top:0"><div class="bar-fill" id="goalBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress towards your goal"></div></div>
+      <div class="bar-row"><span id="goalSavedTxt">$0 saved</span><span id="goalLeftTxt"></span></div>
+      <div class="pace" id="goalPace"></div>
+      <p class="hint" style="margin:14px 0 10px">Tap a box each time you save that amount. Fill them all and you've hit your goal, right on time.</p>
+      <div class="grid-env" id="goalGrid" role="group" aria-label="Your savings boxes"></div>
+      <div class="btn-row" style="margin-top:14px">
+        <button class="btn" id="goalPick">🎲 Pick one for me</button>
+        <button class="btn-ghost" id="goalSmall">Smallest left</button>
+      </div>
+    </div>
+
+    <div class="card" id="goalExtraCard" hidden>
+      <h2>Add extra <span style="font-weight:600;color:var(--micro);font-size:.8rem">(optional)</span></h2>
+      <p class="hint">Saved a lump sum that doesn't match a box, like a refund, a sale or spare cash? Add it here and it still counts toward your goal.</p>
+      <div class="inline">
+        <div class="field" style="margin:0">
+          <label for="depAmt">Amount</label>
+          <input type="number" id="depAmt" min="0" step="0.01" inputmode="decimal" enterkeyhint="done" placeholder="20">
+        </div>
+        <button class="btn" id="depAdd">Add</button>
+      </div>
+      <div class="field" style="margin-top:12px;margin-bottom:0">
+        <label for="depNote">Note (optional)</label>
+        <input type="text" id="depNote" placeholder="Sold old headphones" maxlength="80" autocomplete="off" enterkeyhint="done">
+      </div>
+      <div id="depList" style="margin-top:6px"></div>
+    </div>
+
+    <div class="card" id="goalMileCard" hidden>
+      <h2>Milestones</h2>
+      <p class="hint">Small wins on the way to your goal.</p>
+      <div class="miles" id="goalMiles"></div>
+    </div>
+
+    <div class="card" id="goalEmpty">
+      <div class="empty"><div aria-hidden="true">⭐</div>No goal yet. Fill in the box above and tap <b>Build my challenge</b> to get started, or just play the other challenges. No goal needed.</div>
+    </div>
+  </section>
+
+  <footer>
+    Stash ✦ · your data stays in this browser. Nothing is uploaded, ever.<br>
+    Back it up from ⚙ so a cleared browser never costs you your progress.
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-msg" id="toastMsg"></span>
+  <button class="toast-act" id="toastAct" type="button"></button>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <h3 id="modalTitle">Backup &amp; settings</h3>
+    <p>Stash saves to this browser only. That keeps your money data private. Clearing your browser data, or using private mode, will erase it. Export a backup file now and again.</p>
+    <div class="btn-row" style="margin-bottom:16px">
+      <button class="btn" id="doExport">⬇ Export backup</button>
+      <button class="btn-ghost" id="doImport">⬆ Import backup</button>
+      <button class="btn-ghost" id="doPrint">🖨 Print summary</button>
+    </div>
+    <div class="field">
+      <label for="curSel">Currency symbol</label>
+      <select id="curSel">
+        <option value="$">$ · Dollar</option>
+        <option value="£">£ · Pound</option>
+        <option value="€">€ · Euro</option>
+        <option value="C$">C$ · Canadian dollar</option>
+        <option value="A$">A$ · Australian dollar</option>
+        <option value="kr">kr · Krona</option>
+        <option value="R">R · Rand</option>
+        <option value="₹">₹ · Rupee</option>
+        <option value="R$">R$ · Real</option>
+        <option value="¥">¥ · Yen / Yuan</option>
+        <option value="zł">zł · Złoty</option>
+      </select>
+    </div>
+    <hr class="msep">
+    <h4 class="mh">📱 Move to another device</h4>
+    <p class="mp">No account needed. Make a transfer code here, then paste it into Stash on your other device to bring everything across.</p>
+    <div class="btn-row" style="margin-bottom:10px">
+      <button class="btn-ghost" id="doMakeCode">Make a transfer code</button>
+      <button class="btn-ghost" id="doPasteCode">Paste a code here</button>
+    </div>
+    <div id="codeWrap" hidden>
+      <textarea id="codeBox" class="codebox" aria-label="Transfer code"></textarea>
+      <div class="btn-row" style="margin-top:8px">
+        <button class="btn" id="doCopyCode">📋 Copy code</button>
+        <button class="btn" id="doImportCode" hidden>Bring it in</button>
+      </div>
+    </div>
+
+    <hr class="msep">
+    <div class="btn-row">
+      <button class="btn-ghost btn-danger" id="doWipe">Erase everything</button>
+      <button class="btn-ghost" id="doClose" style="margin-left:auto">Close</button>
+    </div>
+    <input type="file" id="fileIn" accept="application/json,.json" hidden>
+  </div>
+</div>
+
+<div class="modal" id="progress" role="dialog" aria-modal="true" aria-labelledby="progTitle">
+  <div class="modal-box wide">
+    <h3 id="progTitle">Your progress</h3>
+    <div class="stats" style="margin-bottom:14px">
+      <div class="stat pk"><b id="progTotal">$0</b><span>Saved so far</span></div>
+      <div class="stat teal"><b id="progMonth">$0</b><span>This month</span></div>
+      <div class="stat flame"><b id="progStreak">0</b><span>Day streak</span></div>
+    </div>
+    <div class="chartwrap"><canvas id="progChart" aria-label="Your savings over time"></canvas>
+      <div class="chart-empty" id="chartEmpty" hidden>Save something and your progress will grow here 🌱</div>
+    </div>
+    <p class="mp" id="progM3" style="text-align:center;margin-top:8px"></p>
+    <div class="btn-row" style="margin-top:6px">
+      <button class="btn" id="doShareCard">✦ Make a shareable card</button>
+      <button class="btn-ghost" id="progClose" style="margin-left:auto">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="themePick" role="dialog" aria-modal="true" aria-labelledby="thTitle">
+  <div class="modal-box" style="max-width:430px">
+    <h3 id="thTitle">Choose your look</h3>
+    <p>Same challenges, same everything. Just the colours you like best.</p>
+    <div class="sw-list" id="swList"></div>
+    <div class="btn-row"><button class="btn-ghost" id="thClose" style="margin-left:auto">Done</button></div>
+  </div>
+</div>
+
+<div class="modal" id="ask" role="dialog" aria-modal="true" aria-labelledby="askTitle">
+  <div class="modal-box" style="max-width:400px">
+    <h3 id="askTitle">Are you sure?</h3>
+    <p id="askBody"></p>
+    <div class="btn-row">
+      <button class="btn-ghost" id="askNo">Cancel</button>
+      <button class="btn-ghost btn-danger" id="askYes" style="margin-left:auto">Yes, do it</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="welcome" role="dialog" aria-modal="true" aria-labelledby="wTitle">
+  <div class="modal-box wide">
+    <h3 id="wTitle">Welcome to Stash ✦</h3>
+    <div class="note-box">
+      Stash keeps score while you save. It <b>doesn't hold any money</b>. You move your own
+      cash to your real savings, then tap here to watch it add up. There's no wrong way to use
+      it, and nothing is ever locked.
+    </div>
+    <p style="margin-bottom:12px;font-weight:700;color:var(--text)">Pick one thing to start. You can add the others whenever you like.</p>
+    <div class="wc-list">
+      <button class="wc" data-go="env">
+        <span class="wc-ico" aria-hidden="true">✉️</span>
+        <span class="wc-txt"><b>Fill 100 envelopes</b><span>Tap a numbered envelope each time you save that amount. Fills up to <em>$5,050</em>.</span></span>
+      </button>
+      <button class="wc" data-go="wk">
+        <span class="wc-ico" aria-hidden="true">📅</span>
+        <span class="wc-txt"><b>Save a little each week</b><span>Save $1 more each week for a year, and tick them in any order. Adds up to <em>$1,378</em>.</span></span>
+      </button>
+      <button class="wc" data-go="ns">
+        <span class="wc-ico" aria-hidden="true">⏸️</span>
+        <span class="wc-txt"><b>Track no-spend days</b><span>Mark the days you don't spend and grow a streak. See what you didn't spend.</span></span>
+      </button>
+      <button class="wc" data-go="goal">
+        <span class="wc-ico" aria-hidden="true">⭐</span>
+        <span class="wc-txt"><b>Set a goal <em>(optional)</em></b><span>Say what you want and by when. Stash builds a custom challenge paced to your deadline, or skip it.</span></span>
+      </button>
+    </div>
+    <div class="btn-row">
+      <button class="btn-ghost" id="wClose" style="margin-left:auto">Just looking around</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ======== DEMO SEED — this single line is the only difference between the
+   customer file (false) and the demo file (true) ======== */
+var SEED = false;
+
+var KEY = "dreamstodone.stash.v1" + (SEED ? ".demo" : "");
+var ENV_TARGET = 5050, WK_TARGET = 1378;
+var MS = { env:[10,25,50,75,100], wk:[10,25,50,75,100], goal:[25,50,75,100] };
+var CURS = ["$","£","€","C$","A$","kr","R","₹","R$","¥","zł"];
+var STATES = ["no","ess","spend"];
+
+/* ---------- storage feature test ---------- */
+var CAN_STORE = (function(){
+  try{
+    var k="__stash_t__";
+    window.localStorage.setItem(k,"1");
+    window.localStorage.removeItem(k);
+    return true;
+  }catch(e){ return false; }
+})();
+
+/* ---------- state ---------- */
+function fresh(){
+  return {
+    v:2,
+    tab:"env",
+    cur:"$",
+    theme:"cosmic",
+    welcomed:false,
+    env:{ done:[] },
+    wk:{ done:[], flip:false },
+    ns:{ ym:null, days:{}, rate:25 },
+    goal:{ name:"", target:0, style:"climb", deps:[], deadline:null, start:null, plan:{ amts:[], done:[], seenLines:[] } },
+    seen:{ env:[], wk:[], goal:[] },
+    log:[]   /* dated save events: {d:timestamp, a:signed amount, k:kind} */
+  };
+}
+var S = fresh();
+
+function isPlain(x){ return x && typeof x==="object" && !Array.isArray(x); }
+function merge(base, o){
+  if(!isPlain(o)) return base;
+  Object.keys(base).forEach(function(k){
+    var bv = base[k], ov = o[k];
+    if(ov===null || ov===undefined) return;
+    if(Array.isArray(bv)){ if(Array.isArray(ov)) base[k] = ov.slice(); return; }
+    if(isPlain(bv)){
+      if(!isPlain(ov)) return;
+      /* a free-form map (ns.days) has no fixed keys — copy it wholesale,
+         otherwise every stored day would be silently dropped */
+      if(Object.keys(bv).length === 0){
+        var cp = {};
+        Object.keys(ov).forEach(function(kk){ cp[kk] = ov[kk]; });
+        base[k] = cp;
+      } else {
+        base[k] = merge(bv, ov);
+      }
+      return;
+    }
+    if(typeof ov !== "object") base[k] = ov;
+  });
+  return base;
+}
+
+/* ---------- sanitiser: keeps hand-edited or corrupt files from breaking maths ---------- */
+var DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+function intsIn(arr, max){
+  var out=[], seenN={};
+  (Array.isArray(arr)?arr:[]).forEach(function(x){
+    var n = parseInt(x,10);
+    if(n>=1 && n<=max && !seenN[n]){ seenN[n]=1; out.push(n); }
+  });
+  return out;
+}
+/* 0-based indices in [0, len) */
+function intsIn0(arr, len){
+  var out=[], seenN={};
+  (Array.isArray(arr)?arr:[]).forEach(function(x){
+    var n = parseInt(x,10);
+    if(n>=0 && n<len && !seenN[n]){ seenN[n]=1; out.push(n); }
+  });
+  return out;
+}
+function clean(){
+  S.env.done = intsIn(S.env.done, 100);
+  S.wk.done  = intsIn(S.wk.done, 52);
+  S.wk.flip  = !!S.wk.flip;
+  /* early builds stored dark/light; map them onto the named themes */
+  if(S.theme === "dark") S.theme = "cosmic";
+  if(S.theme === "light") S.theme = "daylight";
+  if(!THEME_DEF[S.theme]) S.theme = "cosmic";
+  S.welcomed = !!S.welcomed;
+  if(CURS.indexOf(S.cur) === -1) S.cur = "$";
+  if(!({env:1,wk:1,ns:1,goal:1})[S.tab]) S.tab = "env";
+
+  var days = {};
+  if(isPlain(S.ns.days)){
+    Object.keys(S.ns.days).forEach(function(k){
+      if(DATE_RE.test(k) && STATES.indexOf(S.ns.days[k]) !== -1) days[k] = S.ns.days[k];
+    });
+  }
+  S.ns.days = days;
+  S.ns.rate = Math.max(0, Number(S.ns.rate) || 0);
+  if(S.ns.ym !== null && !/^\d{4}-\d{2}$/.test(S.ns.ym)) S.ns.ym = null;
+
+  S.goal.name   = String(S.goal.name || "").slice(0,60);
+  S.goal.target = Math.max(0, Number(S.goal.target) || 0);
+  /* migrate old style names → new challenge types */
+  if(S.goal.style === "gentle" || S.goal.style === "bigfirst") S.goal.style = "climb";
+  if(["climb","steady","weekly","bingo"].indexOf(S.goal.style) === -1) S.goal.style = "climb";
+  S.goal.deps   = (Array.isArray(S.goal.deps) ? S.goal.deps : []).filter(isPlain).map(function(d){
+    return { a: Math.max(0, Number(d.a) || 0),
+             n: String(d.n || "").slice(0,80),
+             d: Number(d.d) || Date.now() };
+  }).filter(function(d){ return d.a > 0; });
+  if(S.goal.deadline !== null && !DATE_RE.test(S.goal.deadline)) S.goal.deadline = null;
+  if(S.goal.start    !== null && !DATE_RE.test(S.goal.start))    S.goal.start = null;
+  if(!isPlain(S.goal.plan)) S.goal.plan = { amts:[], done:[], seenLines:[] };
+  var isBingo = S.goal.style === "bingo";
+  S.goal.plan.amts = (Array.isArray(S.goal.plan.amts) ? S.goal.plan.amts : [])
+    .map(function(a){ return Math.max(0, Number(a) || 0); });
+  /* bingo keeps its free centre (a 0); other types have all-positive boxes */
+  if(isBingo){ if(S.goal.plan.amts.length !== 25) S.goal.plan.amts = []; }
+  else { S.goal.plan.amts = S.goal.plan.amts.filter(function(a){ return a > 0; }); }
+  var pn = S.goal.plan.amts.length;
+  S.goal.plan.done = intsIn0(S.goal.plan.done, pn);            /* 0-based indices */
+  if(isBingo) S.goal.plan.done = S.goal.plan.done.filter(function(i){ return i !== 12; });
+  S.goal.plan.seenLines = (Array.isArray(S.goal.plan.seenLines) ? S.goal.plan.seenLines : [])
+    .map(Number).filter(function(n){ return n >= 0 && n < 12; });
+
+  ["env","wk","goal"].forEach(function(k){
+    S.seen[k] = (Array.isArray(S.seen[k]) ? S.seen[k] : [])
+      .map(Number).filter(function(n){ return MS[k].indexOf(n) !== -1; });
+  });
+
+  S.log = (Array.isArray(S.log) ? S.log : []).filter(isPlain).map(function(e){
+    return { d: Number(e.d) || Date.now(), a: Number(e.a) || 0, k: String(e.k || "") };
+  }).filter(function(e){ return e.a !== 0; });
+  if(S.log.length > 4000) S.log = S.log.slice(S.log.length - 4000); /* keep it bounded */
+}
+
+function load(){
+  if(!CAN_STORE) return;
+  try{
+    var raw = window.localStorage.getItem(KEY);
+    if(!raw) return;
+    var o = JSON.parse(raw);
+    if(isPlain(o)) S = merge(fresh(), o);
+  }catch(e){ /* corrupt or blocked — keep defaults */ }
+}
+var saveTimer = null;
+function save(){
+  if(!CAN_STORE) return;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(writeNow, 180);
+}
+function writeNow(){
+  if(!CAN_STORE) return;
+  clearTimeout(saveTimer); saveTimer = null;
+  try{ window.localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch(e){ toast("Could not save. Storage is full or blocked"); }
+}
+document.addEventListener("visibilitychange", function(){
+  if(document.visibilityState === "hidden") writeNow();
+});
+window.addEventListener("pagehide", writeNow);
+
+/* ---------- helpers ---------- */
+function $(id){ return document.getElementById(id); }
+function money(n){
+  n = Math.round((Number(n) || 0) * 100) / 100;
+  var neg = n < 0; n = Math.abs(n);
+  var s = (n % 1 === 0) ? String(n) : n.toFixed(2);
+  var p = s.split(".");
+  p[0] = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return (neg ? "-" : "") + S.cur + p.join(".");
+}
+function sum(a){ return a.reduce(function(x,y){ return x + y; }, 0); }
+function pad(n){ return String(n).length < 2 ? "0" + n : String(n); }
+function ymKey(d){ return d.getFullYear() + "-" + pad(d.getMonth() + 1); }
+function dKey(d){ return ymKey(d) + "-" + pad(d.getDate()); }
+function todayKey(){ return dKey(new Date()); }
+/* calendar-day index, immune to daylight-saving shifts */
+function dayIdx(key){
+  var p = key.split("-");
+  return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000);
+}
+
+/* ---------- toast (with optional undo action) ---------- */
+var tTimer = null, tAction = null;
+function toast(msg, actLabel, fn){
+  var t = $("toast");
+  $("toastMsg").textContent = msg;
+  tAction = fn || null;
+  $("toastAct").textContent = actLabel || "";
+  t.classList.toggle("has-act", !!fn);
+  t.classList.add("show");
+  clearTimeout(tTimer);
+  tTimer = setTimeout(function(){ t.classList.remove("show"); tAction = null; }, fn ? 6000 : 2400);
+}
+$("toastAct").onclick = function(){
+  var f = tAction; tAction = null;
+  $("toast").classList.remove("show");
+  if(f) f();
+};
+
+/* ---------- confetti (single canvas particle engine) ---------- */
+var fx = $("fx"), ctx = fx.getContext("2d"), parts = [], raf = null, last = 0, fxW = 0, fxH = 0;
+function sizeFx(){
+  var w = window.innerWidth, h = window.innerHeight;
+  /* ignore the small height changes a mobile address bar causes */
+  if(w === fxW && Math.abs(h - fxH) < 120) return;
+  fxW = w; fxH = h;
+  var r = Math.min(window.devicePixelRatio || 1, 2);
+  fx.width = w * r; fx.height = h * r;
+  fx.style.width = w + "px"; fx.style.height = h + "px";
+  ctx.setTransform(r, 0, 0, r, 0, 0);
+}
+sizeFx();
+var rzT = null;
+window.addEventListener("resize", function(){
+  clearTimeout(rzT); rzT = setTimeout(sizeFx, 150);
+});
+
+var COLORS = ["#c77dff","#ff6eb4","#ffb0d8","#ffd166","#00e5c8","#f0e6ff"];
+/* confetti is authored in the cosmic palette; each theme remaps it so the
+   celebration matches the page (and pale colours stay visible on a light one) */
+var FX_MAP = {
+  cosmic: null,
+  daylight: { "#f0e6ff":"#8b3dd6", "#ffb0d8":"#ff4d9d", "#00e5c8":"#00a892", "#ffd166":"#e9a300" },
+  midnight: { "#c77dff":"#5aa2ff", "#ff6eb4":"#2ad4ee", "#ffb0d8":"#8ae8fa",
+              "#f0e6ff":"#dbeafe", "#00e5c8":"#34d399", "#ffd166":"#f7c95c" },
+  steel:    { "#c77dff":"#1466cc", "#ff6eb4":"#0d7490", "#ffb0d8":"#0a5f77",
+              "#f0e6ff":"#1466cc", "#00e5c8":"#0f766e", "#ffd166":"#a97400" }
+};
+function fxCol(c){ var m = FX_MAP[S.theme]; return (m && m[c]) || c; }
+function reduced(){
+  return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+}
+function burst(n, originX, originY){
+  if(reduced()) return;
+  sizeFx();
+  var ox = originX === undefined ? fxW / 2 : originX;
+  var oy = originY === undefined ? fxH * 0.32 : originY;
+  for(var i = 0; i < n; i++){
+    var a = Math.random() * Math.PI * 2;
+    var sp = 140 + Math.random() * 320;
+    parts.push({
+      x:ox, y:oy,
+      vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - 140,
+      r:3 + Math.random() * 4,
+      c:fxCol(COLORS[(Math.random() * COLORS.length) | 0]),
+      rot:Math.random() * 6.28, vr:(Math.random() - 0.5) * 9,
+      life:0, max:1.1 + Math.random() * 0.9
+    });
+  }
+  if(parts.length > 420) parts.splice(0, parts.length - 420);
+  if(!raf){ last = performance.now(); raf = requestAnimationFrame(tick); }
+}
+function tick(now){
+  var dt = Math.min((now - last) / 1000, 0.05);
+  last = now;
+  ctx.clearRect(0, 0, fxW, fxH);
+  for(var i = parts.length - 1; i >= 0; i--){
+    var p = parts[i];
+    p.life += dt;
+    if(p.life >= p.max){ parts.splice(i, 1); continue; }
+    p.vy += 620 * dt;
+    p.vx *= 0.995;
+    p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
+    var al = 1 - (p.life / p.max);
+    ctx.save();
+    ctx.globalAlpha = al < 0 ? 0 : al;
+    ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    if(p.t){
+      ctx.font = (p.r * 2.4) + "px system-ui,'Segoe UI Emoji','Apple Color Emoji',sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(p.t, 0, 0);
+    } else {
+      ctx.fillStyle = p.c;
+      ctx.fillRect(-p.r, -p.r * 0.6, p.r * 2, p.r * 1.2);
+    }
+    ctx.restore();
+  }
+  if(parts.length){ raf = requestAnimationFrame(tick); }
+  else { ctx.clearRect(0, 0, fxW, fxH); raf = null; }
+}
+
+/* ---------- themed celebrations (per challenge) ---------- */
+var THEMES = {
+  env:  { emoji:["💵","🪙","✉️"], colors:["#c77dff","#ff6eb4","#ffd166"] },
+  wk:   { emoji:["🪙","💰","💵"], colors:["#ffd166","#ff6eb4","#c77dff"] },
+  ns:   { emoji:["🍃","✨","💚"], colors:["#00e5c8","#7be0ad","#f0e6ff"] },
+  bingo:{ emoji:["🎉","⭐","💵"], colors:["#c77dff","#ff6eb4","#ffd166"] },
+  wthr: { emoji:["☀️","💧","💵"], colors:["#ffd166","#00e5c8","#c77dff"] },
+  goal: { emoji:["⭐","💫","💵"], colors:["#c77dff","#ffd166","#ff6eb4"] }
+};
+function emojiBurst(theme, ox, oy, n){
+  if(reduced()) return;
+  sizeFx();
+  var t = THEMES[theme] || THEMES.goal;
+  ox = ox === undefined ? fxW / 2 : ox;
+  oy = oy === undefined ? fxH * 0.32 : oy;
+  for(var i = 0; i < n; i++){
+    var a = Math.random() * Math.PI * 2;
+    var sp = 110 + Math.random() * 240;
+    var em = Math.random() < 0.55;
+    parts.push({
+      x:ox, y:oy,
+      vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - 170,
+      r: em ? (11 + Math.random() * 7) : (3 + Math.random() * 4),
+      c: fxCol(t.colors[(Math.random() * t.colors.length) | 0]),
+      t: em ? t.emoji[(Math.random() * t.emoji.length) | 0] : null,
+      rot: Math.random() * 6.28, vr:(Math.random() - 0.5) * 6,
+      life:0, max:1.0 + Math.random() * 0.9
+    });
+  }
+  if(parts.length > 420) parts.splice(0, parts.length - 420);
+  if(!raf){ last = performance.now(); raf = requestAnimationFrame(tick); }
+}
+/* short-lived DOM overlays for the floating amount + the bill dropping in */
+function fxNode(cls, text, x, y, color){
+  if(reduced()) return;
+  var el = document.createElement("div");
+  el.className = cls; el.textContent = text;
+  el.style.left = x + "px"; el.style.top = y + "px";
+  if(color) el.style.color = color;
+  document.body.appendChild(el);
+  setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 1100);
+}
+function floatLabel(text, x, y, color){ fxNode("fxlabel", text, x, y, color); }
+function dropBill(x, y){ fxNode("fxbill", "💵", x, y); }
+/* one call per challenge event */
+function celebrate(theme, x, y, label){
+  if(reduced()) return;
+  emojiBurst(theme, x, y, 12);
+  if(theme === "env") dropBill(x, y);           /* money drops into the envelope */
+  if(label) floatLabel(label, x, y,
+    theme === "ns" ? "#7be0ad" : theme === "wk" ? "#ffd166" : "#ffb0d8");
+}
+function bigCelebrate(theme){
+  burst(theme === "goal" ? 120 : 90);           /* colourful confetti */
+  emojiBurst(theme, undefined, undefined, 18);  /* plus themed money */
+}
+
+/* ---------- totals ---------- */
+function envTotal(){ return sum(S.env.done); }
+function wkTotal(){ return sum(S.wk.done); }
+function nsCount(){
+  var c = 0;
+  for(var k in S.ns.days){ if(S.ns.days[k] === "no") c++; }
+  return c;
+}
+function nsMonthCount(){
+  var ym = S.ns.ym || ymKey(new Date()), c = 0;
+  for(var k in S.ns.days){ if(S.ns.days[k] === "no" && k.indexOf(ym + "-") === 0) c++; }
+  return c;
+}
+function nsTotal(){ return nsCount() * (Number(S.ns.rate) || 0); }
+function goalTotal(){ return sum(S.goal.deps.map(function(d){ return Number(d.a) || 0; })); } /* extra deposits */
+/* money in the custom goal challenge: the filled boxes */
+function planTotal(){
+  return S.goal.plan.done.reduce(function(s, i){ return s + (Number(S.goal.plan.amts[i]) || 0); }, 0);
+}
+function goalTarget(){ return Number(S.goal.target) || 0; }
+function hasGoal(){ return goalTarget() > 0 && S.goal.plan.amts.length > 0; }
+function goalSaved(){ return planTotal() + goalTotal(); }        /* money toward the goal */
+function goalPct(){ var t = goalTarget(); return t > 0 ? Math.min(100, (goalSaved() / t) * 100) : 0; }
+/* every dollar put away anywhere (no-spend excluded — it is money not spent) */
+function allSaved(){ return envTotal() + wkTotal() + goalSaved(); }
+
+/* ---------- dated activity log (powers the progress view + streak + card) ---------- */
+function logSave(amount, kind){
+  amount = Math.round((Number(amount) || 0) * 100) / 100;
+  if(!amount) return;
+  S.log.push({ d: Date.now(), a: amount, k: kind || "" });
+  if(S.log.length > 4000) S.log.shift();
+}
+/* cumulative-by-day series: [{idx, day 'YYYY-MM-DD', cum}] over the whole log */
+function logSeries(){
+  var byDay = {}, days = [];
+  S.log.slice().sort(function(x, y){ return x.d - y.d; }).forEach(function(e){
+    var key = dKey(new Date(e.d));
+    if(!(key in byDay)){ byDay[key] = 0; days.push(key); }
+    byDay[key] += e.a;
+  });
+  days.sort();
+  var cum = 0, out = [];
+  days.forEach(function(day){ cum += byDay[day]; out.push({ day: day, cum: Math.max(0, cum) }); });
+  return out;
+}
+/* saving streak: consecutive days (back from today) with a positive net save */
+function savingStreak(){
+  var pos = {};
+  S.log.forEach(function(e){ if(e.a > 0){ pos[dKey(new Date(e.d))] = 1; } });
+  var idxs = Object.keys(pos).map(dayIdx).sort(function(a, b){ return a - b; });
+  var best = 0, run = 0, prev = null;
+  idxs.forEach(function(n){ run = (prev !== null && n - prev === 1) ? run + 1 : 1; if(run > best) best = run; prev = n; });
+  var cur = 0, probe = new Date();
+  for(;;){ if(pos[dKey(probe)]){ cur++; probe.setDate(probe.getDate() - 1); } else break; }
+  return { cur: cur, best: Math.max(best, cur) };
+}
+function savedThisMonth(){
+  var ym = ymKey(new Date()), s = 0;
+  S.log.forEach(function(e){ if(ymKey(new Date(e.d)) === ym) s += e.a; });
+  return Math.max(0, s);
+}
+
+/* ---------- pace + on-track (the timeframe) ---------- */
+function paceInfo(){
+  if(!hasGoal() || !S.goal.deadline || !S.goal.start) return null;
+  var tgt = goalTarget(), saved = goalSaved();
+  var start = dayIdx(S.goal.start), end = dayIdx(S.goal.deadline), today = dayIdx(todayKey());
+  var totalDays = Math.max(1, end - start);
+  var elapsed = Math.min(totalDays, Math.max(0, today - start));
+  var daysLeft = end - today;
+  var left = Math.max(0, tgt - saved);
+  var by = new Date(S.goal.deadline + "T00:00:00").toLocaleDateString(undefined, { month:"short", day:"numeric", year:"numeric" });
+  var out = { rate:"", status:"", cls:"ok", line:"" };
+
+  if(saved >= tgt){
+    out.status = "Reached 🏆"; out.cls = "done";
+    out.rate = "Done · finished by " + by + ".";
+    out.line = "Goal reached. Extraordinary. 🏆";
+    return out;
+  }
+  if(daysLeft <= 0){
+    out.status = money(left) + " to go"; out.cls = "behind";
+    out.rate = "Deadline (" + by + ") has passed, but keep going. Every bit counts.";
+    out.line = "Past the deadline, but " + money(left) + " from done. Keep going.";
+    return out;
+  }
+  /* pace to finish on time — self-correcting from where you are now */
+  if(daysLeft <= 14){
+    var perDay = left / daysLeft;
+    out.rate = "Save about " + money(niceRate(perDay)) + "/day to finish by " + by + ".";
+  } else {
+    var perWeek = left / (daysLeft / 7);
+    out.rate = "Save about " + money(niceRate(perWeek)) + "/week to finish by " + by + ".";
+  }
+  /* on track? compare with where you 'should' be by now */
+  var expected = tgt * (elapsed / totalDays);
+  var diff = saved - expected;
+  var oneStep = tgt / 20;
+  if(diff >= oneStep){ out.cls = "ok"; out.status = money(diff) + " ahead 🚀"; }
+  else if(diff >= -oneStep){ out.cls = "ok"; out.status = "On track ✅"; }
+  else { out.cls = "behind"; out.status = money(-diff) + " behind"; }
+  out.line = out.rate;
+  return out;
+}
+function niceRate(v){
+  if(v >= 100) return Math.round(v / 5) * 5;
+  if(v >= 20)  return Math.round(v);
+  return Math.max(1, Math.round(v));
+}
+
+/* ---------- build the custom challenge: amounts summing exactly to target ----------
+   Challenge types, all summing to exactly `target`:
+   • climb  — a rising ramp of numbered boxes (small first)
+   • steady — equal boxes
+   • weekly — equal boxes, one per week of the timeframe
+   • bingo  — a 5×5 card (24 squares + free centre), with line bonuses         */
+var BINGO_MIN = 24;
+function genPlan(target, style, weeks){
+  target = Math.max(1, Math.round(target));
+  style = style || "climb";
+  if(style === "bingo") return genBingoCard(target);
+  var N;
+  if(style === "weekly"){
+    N = Math.min(104, Math.max(1, weeks || 0));
+    if(N > target) N = target;
+    return equalPlan(target, N);
+  }
+  N = Math.min(60, Math.max(12, Math.round(target / 25)));
+  if(N > target) N = target;                 /* tiny goals: $1 boxes */
+  if(style === "steady") return equalPlan(target, N);
+  return rampPlan(target, N);                 /* climb */
+}
+function equalPlan(target, N){
+  var base = Math.floor(target / N), r = target - base * N, amts = [];
+  for(var i = 0; i < N; i++){ amts.push(Math.max(1, base + (i < r ? 1 : 0))); }
+  return amts;
+}
+function rampPlan(target, N){
+  var wsum = N * (N + 1) / 2, amts = [], acc = 0;
+  for(var i = 1; i <= N; i++){
+    var v = Math.max(1, Math.round(target * i / wsum));
+    amts.push(v); acc += v;
+  }
+  var diff = target - acc, k = N - 1, guard = N * 2000;
+  while(diff !== 0 && guard-- > 0){
+    if(diff > 0){ amts[k]++; diff--; }
+    else if(amts[k] > 1){ amts[k]--; diff++; }
+    k--; if(k < 0) k = N - 1;
+  }
+  if(diff !== 0) amts[N - 1] = Math.max(1, amts[N - 1] + diff);
+  return amts;
+}
+/* bingo card: 25 slots, index 12 is the free centre (0); 24 amounts sum to target */
+function genBingoCard(target){
+  target = Math.max(BINGO_MIN, Math.round(target));
+  var n = 24, raw = [];
+  for(var i = 0; i < n; i++){ raw.push(3 + Math.floor(Math.random() * 38)); }
+  var acc = raw.reduce(function(a, b){ return a + b; }, 0);
+  var amts = raw.map(function(a){ return Math.max(1, Math.round(a * target / acc)); });
+  var diff = target - amts.reduce(function(a, b){ return a + b; }, 0), k = 0, guard = 99999;
+  while(diff !== 0 && guard-- > 0){
+    if(diff > 0){ amts[k]++; diff--; }
+    else if(amts[k] > 1){ amts[k]--; diff++; }
+    k = (k + 1) % amts.length;
+  }
+  amts.splice(12, 0, 0); /* free centre */
+  return amts;
+}
+var BINGO_LINES = [
+  [0,1,2,3,4],[5,6,7,8,9],[10,11,12,13,14],[15,16,17,18,19],[20,21,22,23,24],
+  [0,5,10,15,20],[1,6,11,16,21],[2,7,12,17,22],[3,8,13,18,23],[4,9,14,19,24],
+  [0,6,12,18,24],[4,8,12,16,20]
+];
+var BINGO_LINE_NAME = ["Top row","2nd row","Middle row","4th row","Bottom row",
+  "1st column","2nd column","Middle column","4th column","Last column","Diagonal","Diagonal"];
+function bingoFilled(i){ return i === 12 || S.goal.plan.done.indexOf(i) !== -1; }
+function bingoLineCount(){
+  var c = 0; BINGO_LINES.forEach(function(ln){ if(ln.every(bingoFilled)) c++; }); return c;
+}
+var TYPE_NAME = { climb:"Climb", steady:"Steady", weekly:"Weekly plan", bingo:"Bingo" };
+function planWeeks(){
+  if(S.goal.deadline && S.goal.start)
+    return Math.max(1, Math.round((dayIdx(S.goal.deadline) - dayIdx(S.goal.start)) / 7));
+  return 0;
+}
+/* how many weeks the chosen finish time works out to, matching what build will use */
+function weeksForDur(dur, unit){
+  if(dur < 1) return 0;
+  return Math.max(1, Math.round((dayIdx(addTime(new Date(), dur, unit)) - dayIdx(todayKey())) / 7));
+}
+/* live note under the challenge picker — explains what the timeframe produces */
+function updateTypeHint(){
+  var el = $("goalTypeHint"); if(!el) return;
+  var style = $("goalStyle").value;
+  var dur = Math.round(Number($("goalDur").value) || 0);
+  var unit = $("goalUnit").value === "w" ? "w" : "m";
+  if(style === "weekly"){
+    var wk = weeksForDur(dur, unit);
+    if(wk < 1){
+      el.textContent = "📅 One box for each week. Set a finish time above so Stash knows how many weeks to plan.";
+    } else {
+      el.textContent = "📅 " + wk + " weekly box" + (wk === 1 ? "" : "es") + ", one for each week until your finish date. Change the finish time to add or remove weeks.";
+    }
+    el.hidden = false;
+  } else {
+    el.hidden = true;
+    el.textContent = "";
+  }
+}
+function addTime(from, n, unit){
+  var d = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+  if(unit === "m") d.setMonth(d.getMonth() + n);
+  else d.setDate(d.getDate() + n * 7);
+  return dKey(d);
+}
+
+/* ---------- milestones ---------- */
+function checkMiles(which, pct, silent){
+  var list = MS[which] || [];
+  var seen = S.seen[which] || (S.seen[which] = []);
+  for(var i = 0; i < list.length; i++){
+    var m = list[i];
+    if(pct >= m && seen.indexOf(m) === -1){
+      seen.push(m);
+      if(!silent){
+        bigCelebrate(THEMES[which] ? which : "goal");
+        if(m >= 100) burst(90); /* extra confetti for the finish */
+        toast(m >= 100 ? "🏆 Challenge complete. Every single one." : "🎉 " + m + "% there. Keep going.");
+      }
+    }
+  }
+  save();
+}
+function paintMiles(box, which, pct){
+  box.innerHTML = "";
+  MS[which].forEach(function(m){
+    var d = document.createElement("div");
+    d.className = "mile" + (pct >= m ? " hit" : "");
+    d.innerHTML = "<b aria-hidden=\"true\">" + (m >= 100 ? "🏆" : "⭐") + "</b><span>" + m + "%</span>";
+    box.appendChild(d);
+  });
+}
+
+/* ---------- render: hero ----------
+   • A goal with a built challenge → the hero is the goal: money saved toward
+     it, a progress bar, and the pace/on-track line.
+   • Otherwise → a plain running "total saved". The classic challenges stand
+     on their own. */
+function renderHero(){
+  var goaled = hasGoal();
+  var bar = $("heroBar"), label = $("heroLabel");
+
+  if(goaled){
+    var tot = goalSaved(), tgt = goalTarget(), pct = goalPct();
+    $("heroTotal").textContent = money(tot);
+    bar.parentElement.hidden = false;
+    $("heroBarRow").hidden = false;
+    bar.style.width = pct + "%";
+    bar.setAttribute("aria-valuenow", Math.round(pct));
+    $("heroPct").textContent = pct.toFixed(pct < 10 && pct > 0 ? 1 : 0) + "%";
+    $("heroGoal").textContent = "of " + money(tgt) + (S.goal.name ? " · " + S.goal.name : "");
+    label.textContent = S.goal.name ? "Saved toward " + S.goal.name : "Saved toward your goal";
+    var pc = paceInfo();
+    $("heroSub").textContent = (pc && pc.line) ? pc.line : (
+        tot <= 0  ? "Tap your first box on the ⭐ tab to begin." :
+        pct < 100 ? "Keep going, you're on your way." :
+                    "Goal reached. Extraordinary. 🏆");
+    checkMiles("goal", pct);
+  } else {
+    var all = allSaved();
+    $("heroTotal").textContent = money(all);
+    bar.parentElement.hidden = true;
+    $("heroBarRow").hidden = true;
+    label.textContent = "Total saved";
+    $("heroSub").textContent =
+        (all <= 0 && nsCount() === 0)
+          ? "Pick a challenge below and save your first envelope."
+          : "Set a goal on the ⭐ tab for a custom challenge with a deadline, or just keep playing.";
+  }
+
+  var chips = [];
+  if(envTotal() > 0)          chips.push('<span class="chip">Envelopes <b>' + money(envTotal()) + "</b></span>");
+  if(wkTotal() > 0)           chips.push('<span class="chip">52 weeks <b>' + money(wkTotal()) + "</b></span>");
+  if(goaled && goalSaved() > 0) chips.push('<span class="chip">My goal <b>' + money(goalSaved()) + "</b></span>");
+  if(nsTotal() > 0)           chips.push('<span class="chip ns">Not spent <b>' + money(nsTotal()) + "</b></span>");
+  $("heroChips").innerHTML = chips.join("");
+}
+
+/* ---------- roving-tabindex + arrow keys for the grids ---------- */
+function cols(grid){
+  var style = window.getComputedStyle(grid).getPropertyValue("grid-template-columns");
+  var n = (style || "").split(" ").filter(function(s){ return s.trim(); }).length;
+  return n > 0 ? n : 1;
+}
+function gridKeys(grid, selector){
+  grid.addEventListener("keydown", function(e){
+    var keys = ["ArrowRight","ArrowLeft","ArrowDown","ArrowUp","Home","End"];
+    if(keys.indexOf(e.key) === -1) return;
+    var items = Array.prototype.filter.call(grid.querySelectorAll(selector), function(el){
+      return !el.classList.contains("blank");
+    });
+    var i = items.indexOf(document.activeElement);
+    if(i === -1) return;
+    e.preventDefault();
+    var c = cols(grid), j = i;
+    if(e.key === "ArrowRight") j = i + 1;
+    else if(e.key === "ArrowLeft") j = i - 1;
+    else if(e.key === "ArrowDown") j = i + c;
+    else if(e.key === "ArrowUp") j = i - c;
+    else if(e.key === "Home") j = 0;
+    else if(e.key === "End") j = items.length - 1;
+    if(j < 0 || j >= items.length) return;
+    items.forEach(function(el){ el.tabIndex = -1; });
+    items[j].tabIndex = 0;
+    items[j].focus();
+  });
+  grid.addEventListener("focusin", function(e){
+    var el = e.target.closest(selector);
+    if(!el) return;
+    Array.prototype.forEach.call(grid.querySelectorAll(selector), function(x){ x.tabIndex = -1; });
+    el.tabIndex = 0;
+  });
+}
+
+/* ---------- render: envelopes ---------- */
+function renderEnv(){
+  var g = $("envGrid");
+  if(!g.childElementCount){
+    var frag = document.createDocumentFragment();
+    for(var i = 1; i <= 100; i++){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "cell"; b.dataset.n = i;
+      b.tabIndex = i === 1 ? 0 : -1;
+      b.innerHTML = "<span>" + i + "</span><small></small>";
+      frag.appendChild(b);
+    }
+    g.appendChild(frag);
+    g.addEventListener("click", function(e){
+      var c = e.target.closest(".cell"); if(!c) return;
+      toggleEnv(parseInt(c.dataset.n, 10), c);
+    });
+    gridKeys(g, ".cell");
+  }
+  var done = S.env.done;
+  Array.prototype.forEach.call(g.children, function(c){
+    var n = parseInt(c.dataset.n, 10);
+    var on = done.indexOf(n) !== -1;
+    c.setAttribute("aria-pressed", on ? "true" : "false");
+    c.setAttribute("aria-label", "Envelope " + n + ", " + money(n));
+    c.classList.remove("hilite");
+    c.querySelector("small").textContent = money(n);
+  });
+  var t = envTotal();
+  $("envSaved").textContent = money(t);
+  $("envLeft").textContent = 100 - done.length;
+  $("envPill").textContent = done.length + " / 100";
+  var next = smallestLeft(100, done);
+  $("envNext").textContent = next ? money(next) : "—";
+  $("envGoalTxt").textContent = money(ENV_TARGET);
+  $("envGoalTxt2").textContent = money(ENV_TARGET);
+  paintMiles($("envMiles"), "env", (t / ENV_TARGET) * 100);
+}
+function smallestLeft(max, done){
+  for(var i = 1; i <= max; i++){ if(done.indexOf(i) === -1) return i; }
+  return null;
+}
+function toggleEnv(n, el){
+  var i = S.env.done.indexOf(n);
+  if(i === -1){
+    S.env.done.push(n); logSave(n, "env");
+    if(el){
+      el.classList.add("pulse");
+      setTimeout(function(){ el.classList.remove("pulse"); }, 460);
+      var r = el.getBoundingClientRect();
+      celebrate("env", r.left + r.width / 2, r.top + r.height / 2, "+" + money(n));
+    }
+  } else {
+    S.env.done.splice(i, 1); logSave(-n, "env");
+  }
+  save(); renderEnv(); renderHero();
+  checkMiles("env", (envTotal() / ENV_TARGET) * 100);
+}
+
+/* ---------- render: 52 weeks ---------- */
+function renderWk(){
+  var g = $("wkGrid");
+  if(!g.childElementCount){
+    var frag = document.createDocumentFragment();
+    for(var i = 1; i <= 52; i++){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "cell"; b.dataset.n = i;
+      b.tabIndex = i === 1 ? 0 : -1;
+      b.innerHTML = "<span>W" + i + "</span><small></small>";
+      frag.appendChild(b);
+    }
+    g.appendChild(frag);
+    g.addEventListener("click", function(e){
+      var c = e.target.closest(".cell"); if(!c) return;
+      toggleWk(parseInt(c.dataset.n, 10), c);
+    });
+    gridKeys(g, ".cell");
+  }
+  var done = S.wk.done;
+  Array.prototype.forEach.call(g.children, function(c){
+    var n = parseInt(c.dataset.n, 10);
+    c.setAttribute("aria-pressed", done.indexOf(n) !== -1 ? "true" : "false");
+    c.setAttribute("aria-label", "Week " + n + ", " + money(n));
+    c.querySelector("small").textContent = money(n);
+  });
+  var t = wkTotal();
+  $("wkSaved").textContent = money(t);
+  $("wkLeft").textContent = 52 - done.length;
+  $("wkPill").textContent = done.length + " / 52";
+  var nx = nextWk();
+  $("wkNext").textContent = nx === null ? "—" : money(nx);
+  $("wkFlip").textContent = S.wk.flip ? "Flip order (low first)" : "Flip order (high first)";
+  $("wkGoalTxt").textContent = money(WK_TARGET);
+  $("wkGoalTxt2").textContent = money(WK_TARGET);
+  paintMiles($("wkMiles"), "wk", (t / WK_TARGET) * 100);
+}
+function nextWk(){
+  var left = [];
+  for(var i = 1; i <= 52; i++){ if(S.wk.done.indexOf(i) === -1) left.push(i); }
+  if(!left.length) return null;
+  return S.wk.flip ? left[left.length - 1] : left[0];
+}
+function toggleWk(n, el){
+  var i = S.wk.done.indexOf(n);
+  if(i === -1){
+    S.wk.done.push(n); logSave(n, "wk");
+    if(el){
+      el.classList.add("pulse");
+      setTimeout(function(){ el.classList.remove("pulse"); }, 460);
+      var r = el.getBoundingClientRect();
+      celebrate("wk", r.left + r.width / 2, r.top + r.height / 2, "+" + money(n));
+    }
+  } else { S.wk.done.splice(i, 1); logSave(-n, "wk"); }
+  save(); renderWk(); renderHero();
+  checkMiles("wk", (wkTotal() / WK_TARGET) * 100);
+}
+
+/* ---------- render: no-spend ---------- */
+function nsDate(){
+  if(!S.ns.ym) S.ns.ym = ymKey(new Date());
+  var p = S.ns.ym.split("-");
+  return new Date(parseInt(p[0], 10), parseInt(p[1], 10) - 1, 1);
+}
+var NS_LABEL = { no:"no spend", ess:"essentials only", spend:"spent" };
+function renderNs(keepRate){
+  var d = nsDate();
+  var y = d.getFullYear(), m = d.getMonth();
+  var names = ["January","February","March","April","May","June","July",
+               "August","September","October","November","December"];
+  $("nsTitle").textContent = "No-Spend " + names[m] + " " + y;
+
+  var firstDow = (new Date(y, m, 1).getDay() + 6) % 7; /* Monday-first */
+  var total = new Date(y, m + 1, 0).getDate();
+  var cal = $("nsCal"); cal.innerHTML = "";
+  var tk = todayKey(), tIdx = dayIdx(tk);
+  var frag = document.createDocumentFragment();
+  for(var b = 0; b < firstDow; b++){
+    var e = document.createElement("div"); e.className = "day blank"; e.setAttribute("aria-hidden","true");
+    frag.appendChild(e);
+  }
+  var firstBtn = null;
+  for(var day = 1; day <= total; day++){
+    var key = y + "-" + pad(m + 1) + "-" + pad(day);
+    var st = S.ns.days[key];
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "day" + (st ? " " + st : "") + (key === tk ? " today" : "") +
+                    (dayIdx(key) > tIdx ? " future" : "");
+    btn.textContent = day;
+    btn.dataset.key = key;
+    btn.tabIndex = -1;
+    btn.setAttribute("aria-label", names[m] + " " + day + ", " + (st ? NS_LABEL[st] : "not marked"));
+    if(!firstBtn) firstBtn = btn;
+    frag.appendChild(btn);
+  }
+  cal.appendChild(frag);
+  if(firstBtn) firstBtn.tabIndex = 0;
+
+  var mc = nsMonthCount();
+  $("nsDays").textContent = mc;
+  $("nsPill").textContent = mc + " of " + total + " days this month";
+  $("nsSaved").textContent = money(nsTotal());
+  var runs = streaks();
+  $("nsStreak").textContent = runs.cur;
+  $("nsBest").textContent = runs.best;
+  if(!keepRate) $("nsRate").value = S.ns.rate;
+}
+function streaks(){
+  var idx = Object.keys(S.ns.days)
+    .filter(function(k){ return S.ns.days[k] === "no"; })
+    .map(dayIdx).sort(function(a, b){ return a - b; });
+  var best = 0, run = 0, prev = null;
+  idx.forEach(function(n){
+    run = (prev !== null && n - prev === 1) ? run + 1 : 1;
+    if(run > best) best = run;
+    prev = n;
+  });
+  /* current streak counts back from today */
+  var cur = 0, probe = new Date();
+  for(;;){
+    if(S.ns.days[dKey(probe)] === "no"){ cur++; probe.setDate(probe.getDate() - 1); }
+    else break;
+  }
+  return { cur:cur, best:Math.max(best, cur) };
+}
+$("nsCal").addEventListener("click", function(e){
+  var b = e.target.closest(".day");
+  if(!b || b.classList.contains("blank")) return;
+  var k = b.dataset.key, st = S.ns.days[k];
+  var nxt = st === undefined ? "no" : st === "no" ? "ess" : st === "ess" ? "spend" : undefined;
+  if(nxt === undefined) delete S.ns.days[k]; else S.ns.days[k] = nxt;
+  if(nxt === "no"){
+    b.classList.add("pulse");
+    var r = b.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    celebrate("ns", cx, cy, (Number(S.ns.rate) > 0 ? money(S.ns.rate) + " saved" : "No-spend"));
+    var runs = streaks();
+    if(runs.cur > 0 && runs.cur % 7 === 0){ bigCelebrate("ns"); toast("🔥 " + runs.cur + " days in a row."); }
+  }
+  save(); renderNs(); renderHero();
+  var again = $("nsCal").querySelector('.day[data-key="' + k + '"]');
+  if(again){ again.tabIndex = 0; again.focus(); }
+});
+gridKeys($("nsCal"), ".day");
+$("nsRate").addEventListener("input", function(){
+  S.ns.rate = Math.max(0, Number(this.value) || 0);
+  save();
+  $("nsSaved").textContent = money(nsTotal());
+  renderHero();
+});
+function shiftMonth(n){
+  var d = nsDate(); d.setDate(1); d.setMonth(d.getMonth() + n);
+  S.ns.ym = ymKey(d); save(); renderNs();
+}
+$("nsPrev").onclick = function(){ shiftMonth(-1); };
+$("nsNext").onclick = function(){ shiftMonth(1); };
+$("nsToday").onclick = function(){ S.ns.ym = ymKey(new Date()); save(); renderNs(); };
+
+/* ---------- render: goal (self-contained custom challenge) ---------- */
+function renderGoal(fromInput){
+  var built = S.goal.plan.amts.length > 0;
+  if(!fromInput){
+    $("goalName").value = S.goal.name || "";
+    $("goalTarget").value = S.goal.target ? String(S.goal.target) : "";
+    $("goalStyle").value = S.goal.style || "climb";
+    var wk = planWeeks();
+    if(wk > 0){ $("goalDur").value = String(wk); $("goalUnit").value = "w"; }
+    updateTypeHint();
+  }
+  $("goalBuild").textContent = built ? "↻ Rebuild challenge" : "✦ Build my challenge";
+  $("goalClear").hidden = !(built || S.goal.name || S.goal.target);
+
+  $("goalPlanCard").hidden = !built;
+  $("goalExtraCard").hidden = !built;
+  $("goalMileCard").hidden = !built;
+  $("goalEmpty").hidden = built;
+  $("goalPill").textContent = built ? money(goalSaved()) + " of " + money(goalTarget()) : "not set yet";
+  if(!built) return;
+
+  var tgt = goalTarget(), saved = goalSaved(), pct = goalPct();
+  $("goalPlanTitle").textContent = S.goal.name ? "Challenge · " + S.goal.name : "Your challenge";
+  var isBingo = S.goal.style === "bingo";
+  var nBoxes = isBingo ? 24 : S.goal.plan.amts.length;
+  $("goalStyleNote").textContent = (TYPE_NAME[S.goal.style] || "Climb") + " · " +
+    (isBingo ? "24 squares · complete lines for bonuses"
+             : nBoxes + " box" + (nBoxes === 1 ? "" : "es") + (S.goal.style === "weekly" ? " · one a week" : ""));
+  $("goalPct").textContent = pct.toFixed(pct < 10 && pct > 0 ? 1 : 0) + "%";
+  $("goalBar").style.width = pct + "%";
+  $("goalBar").setAttribute("aria-valuenow", Math.round(pct));
+  $("goalSavedTxt").textContent = money(saved) + " saved";
+  $("goalLeftTxt").textContent = saved >= tgt ? "goal reached 🏆" : money(tgt - saved) + " to go";
+
+  var pc = paceInfo(), pe = $("goalPace");
+  if(pc){
+    pe.hidden = false;
+    pe.innerHTML = '<span class="rate">' + esc(pc.rate) + '</span>' +
+                   '<span class="status ' + pc.cls + '">' + esc(pc.status) + '</span>';
+  } else {
+    pe.hidden = true; pe.innerHTML = '<span class="rate">No deadline set. Save at your own pace.</span>';
+    pe.hidden = false;
+  }
+
+  renderGoalGrid();
+  paintMiles($("goalMiles"), "goal", pct);
+  renderDeps();
+  if(!fromInput) checkMiles("goal", pct, true);
+}
+function renderGoalGrid(){
+  var g = $("goalGrid"), amts = S.goal.plan.amts, done = S.goal.plan.done;
+  var isBingo = S.goal.style === "bingo";
+  g.className = isBingo ? "grid-bingo" : "grid-env";
+  if(g.childElementCount !== amts.length){
+    g.innerHTML = "";
+    var frag = document.createDocumentFragment();
+    for(var i = 0; i < amts.length; i++){
+      var b = document.createElement("button");
+      b.type = "button"; b.dataset.i = i;
+      b.className = "cell" + (isBingo && i === 12 ? " free" : "");
+      b.tabIndex = i === 0 ? 0 : -1;
+      b.innerHTML = "<span></span>";
+      frag.appendChild(b);
+    }
+    g.appendChild(frag);
+  }
+  Array.prototype.forEach.call(g.children, function(c){
+    var i = parseInt(c.dataset.i, 10);
+    if(isBingo && i === 12){
+      c.firstChild.textContent = "FREE";
+      c.setAttribute("aria-pressed", "true");
+      c.setAttribute("aria-label", "Free square");
+      return;
+    }
+    c.setAttribute("aria-pressed", done.indexOf(i) !== -1 ? "true" : "false");
+    c.setAttribute("aria-label", (isBingo ? "Square " : "Box ") + money(amts[i]) + (done.indexOf(i) !== -1 ? ", saved" : ""));
+    c.firstChild.textContent = money(amts[i]);
+  });
+}
+function toggleGoalBox(i, el){
+  var isBingo = S.goal.style === "bingo";
+  if(isBingo && i === 12) return;
+  var done = S.goal.plan.done, at = done.indexOf(i);
+  if(at === -1){
+    done.push(i); logSave(S.goal.plan.amts[i], "goal");
+    if(el){
+      el.classList.add("pulse");
+      setTimeout(function(){ el.classList.remove("pulse"); }, 460);
+      var r = el.getBoundingClientRect();
+      celebrate(isBingo ? "bingo" : "goal", r.left + r.width / 2, r.top + r.height / 2, "+" + money(S.goal.plan.amts[i]));
+    }
+    if(isBingo){
+      BINGO_LINES.forEach(function(ln, idx){
+        if(S.goal.plan.seenLines.indexOf(idx) === -1 && ln.every(bingoFilled)){
+          S.goal.plan.seenLines.push(idx);
+          bigCelebrate("bingo");
+          toast(done.length === 24 ? "🏆 Full card! Every square filled." : "🎉 Bingo! " + BINGO_LINE_NAME[idx] + " complete.");
+        }
+      });
+    }
+  } else {
+    done.splice(at, 1); logSave(-(S.goal.plan.amts[i] || 0), "goal");
+    if(isBingo) S.goal.plan.seenLines = S.goal.plan.seenLines.filter(function(idx){ return BINGO_LINES[idx].every(bingoFilled); });
+  }
+  save(); renderGoal(); renderHero();
+  checkMiles("goal", goalPct());
+}
+$("goalGrid").addEventListener("click", function(e){
+  var c = e.target.closest(".cell"); if(!c) return;
+  toggleGoalBox(parseInt(c.dataset.i, 10), c);
+});
+gridKeys($("goalGrid"), ".cell");
+function goalLeftIdx(){
+  var out = [], isBingo = S.goal.style === "bingo";
+  for(var i = 0; i < S.goal.plan.amts.length; i++){
+    if(isBingo && i === 12) continue;
+    if(S.goal.plan.done.indexOf(i) === -1) out.push(i);
+  }
+  return out;
+}
+$("goalPick").onclick = function(){
+  var left = goalLeftIdx();
+  if(!left.length){ toast("Every box is filled 🏆"); return; }
+  var pick = left[(Math.random() * left.length) | 0];
+  var sel = '#goalGrid .cell[data-i="' + pick + '"]';
+  spotlight(sel, "Save " + money(S.goal.plan.amts[pick]) + " for this one", "Mark it saved ✓", function(){
+    toggleGoalBox(pick, document.querySelector(sel));
+  });
+};
+$("goalSmall").onclick = function(){
+  var left = goalLeftIdx();
+  if(!left.length){ toast("Every box is filled 🏆"); return; }
+  left.sort(function(a, b){ return S.goal.plan.amts[a] - S.goal.plan.amts[b]; });
+  var pick = left[0], sel = '#goalGrid .cell[data-i="' + pick + '"]';
+  spotlight(sel, "Smallest left: " + money(S.goal.plan.amts[pick]), "Mark it saved ✓", function(){
+    toggleGoalBox(pick, document.querySelector(sel));
+  });
+};
+
+/* render the extra-deposits list */
+function renderDeps(){
+  $("depCount") && ($("depCount").textContent = S.goal.deps.length);
+  var list = $("depList");
+  if(!S.goal.deps.length){
+    list.innerHTML = '<div class="empty" style="padding:16px"><div aria-hidden="true">🪙</div>No extra deposits yet. The boxes above are all you need.</div>';
+    return;
+  }
+  list.innerHTML = "";
+  S.goal.deps.slice().reverse().forEach(function(dp){
+    var row = document.createElement("div"); row.className = "dep";
+    var a = document.createElement("div"); a.className = "dep-amt"; a.textContent = money(dp.a);
+    var body = document.createElement("div"); body.className = "dep-body";
+    var n = document.createElement("div"); n.className = "dep-note"; n.textContent = dp.n || "Deposit";
+    var dt = document.createElement("div"); dt.className = "dep-date";
+    dt.textContent = new Date(dp.d).toLocaleDateString(undefined, { month:"short", day:"numeric", year:"numeric" });
+    body.appendChild(n); body.appendChild(dt);
+    var x = document.createElement("button");
+    x.type = "button"; x.className = "dep-del"; x.textContent = "✕";
+    x.setAttribute("aria-label", "Delete deposit of " + money(dp.a));
+    x.onclick = function(){
+      var idx = S.goal.deps.indexOf(dp);
+      if(idx === -1) return;
+      S.goal.deps.splice(idx, 1); logSave(-(dp.a || 0), "dep");
+      save(); renderGoal(); renderHero();
+      toast("Deposit removed", "Undo", function(){
+        S.goal.deps.splice(idx, 0, dp); logSave(dp.a, "dep");
+        save(); renderGoal(); renderHero();
+      });
+    };
+    row.appendChild(a); row.appendChild(body); row.appendChild(x);
+    list.appendChild(row);
+  });
+}
+
+/* ---------- goal setup: build / rebuild / clear ---------- */
+$("goalName").addEventListener("input", function(){
+  S.goal.name = this.value.slice(0, 60); save();
+  if(hasGoal()) renderHero();
+});
+$("goalStyle").addEventListener("change", updateTypeHint);
+$("goalDur").addEventListener("input", updateTypeHint);
+$("goalUnit").addEventListener("change", updateTypeHint);
+$("goalBuild").onclick = function(){
+  var amt = Math.round(Number($("goalTarget").value) || 0);
+  var dur = Math.round(Number($("goalDur").value) || 0);
+  var unit = $("goalUnit").value === "w" ? "w" : "m";
+  var style = $("goalStyle").value;
+  if(["climb","steady","weekly","bingo"].indexOf(style) === -1) style = "climb";
+  if(amt < 1){ toast("Enter an amount for your goal first"); $("goalTarget").focus(); return; }
+  if(style === "bingo" && amt < BINGO_MIN){ toast("Bingo needs a goal of at least " + money(BINGO_MIN) + ". Try a bigger goal or another type."); return; }
+  if(style === "weekly" && dur < 1){ toast("Weekly needs a finish time so it knows how many weeks to plan. Add one above."); $("goalDur").focus(); return; }
+  var doBuild = function(){
+    if(planTotal() > 0) logSave(-planTotal(), "reset"); /* clear old boxes from the log */
+    S.goal.name = $("goalName").value.trim().slice(0, 60);
+    S.goal.target = amt;
+    S.goal.style = style;
+    S.goal.start = todayKey();
+    S.goal.deadline = dur > 0 ? addTime(new Date(), dur, unit) : null;
+    S.goal.plan = { amts: genPlan(amt, style, planWeeks()), done: [], seenLines: [] };
+    S.seen.goal = [];
+    save(); renderGoal(); renderHero();
+    bigCelebrate(style === "bingo" ? "bingo" : "goal"); toast("Your challenge is ready 🎉");
+  };
+  if(S.goal.plan.done.length){
+    ask("Rebuild your challenge?", "This makes a fresh challenge for your goal and clears the squares you've already ticked. Your extra deposits are kept.", doBuild, "Rebuild");
+  } else { doBuild(); }
+};
+$("goalClear").onclick = function(){
+  ask("Clear this goal?", "Your goal, its challenge and its extra deposits will be removed. The other challenges are untouched.", function(){
+    if(goalSaved() > 0) logSave(-goalSaved(), "reset");
+    S.goal = { name:"", target:0, style:"climb", deps:[], deadline:null, start:null, plan:{ amts:[], done:[], seenLines:[] } };
+    S.seen.goal = [];
+    save(); renderGoal(); renderHero(); toast("Goal cleared");
+  }, "Clear goal");
+};
+$("depAdd").onclick = function(){
+  var v = Number($("depAmt").value);
+  if(!v || v <= 0 || !isFinite(v)){ toast("Enter an amount first"); $("depAmt").focus(); return; }
+  v = Math.round(v * 100) / 100;
+  S.goal.deps.push({ a:v, n:$("depNote").value.trim(), d:Date.now() }); logSave(v, "dep");
+  $("depAmt").value = ""; $("depNote").value = "";
+  save(); renderGoal(); renderHero();
+  var br = $("depAdd").getBoundingClientRect();
+  celebrate("goal", br.left + br.width / 2, br.top + br.height / 2, "+" + money(v));
+  toast("Added " + money(v) + " 🎉");
+  $("depAmt").focus();
+};
+$("depAmt").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); $("depAdd").click(); } });
+$("depNote").addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); $("depAdd").click(); } });
+
+/* ---------- envelope / week actions ---------- */
+function spotlight(sel, msg, actLabel, fn){
+  var el = document.querySelector(sel);
+  if(!el) return;
+  el.classList.add("hilite");
+  el.tabIndex = 0;
+  el.scrollIntoView({ block:"center", behavior:reduced() ? "auto" : "smooth" });
+  el.focus({ preventScroll:true });
+  toast(msg, actLabel, fn);
+  setTimeout(function(){ el.classList.remove("hilite"); }, 2600);
+}
+$("envRandom").onclick = function(){
+  var left = [];
+  for(var i = 1; i <= 100; i++){ if(S.env.done.indexOf(i) === -1) left.push(i); }
+  if(!left.length){ toast("All 100 envelopes are filled 🏆"); return; }
+  var pick = left[(Math.random() * left.length) | 0];
+  var sel = '#envGrid .cell[data-n="' + pick + '"]';
+  spotlight(sel, "Envelope " + pick + " · put in " + money(pick), "Mark it saved ✓", function(){
+    toggleEnv(pick, document.querySelector(sel));
+  });
+};
+$("envSmall").onclick = function(){
+  var n = smallestLeft(100, S.env.done);
+  if(n === null){ toast("All 100 envelopes are filled 🏆"); return; }
+  var sel = '#envGrid .cell[data-n="' + n + '"]';
+  spotlight(sel, "Smallest left: " + money(n), "Mark it saved ✓", function(){
+    toggleEnv(n, document.querySelector(sel));
+  });
+};
+$("envReset").onclick = function(){
+  ask("Reset the envelopes?", "This clears all 100 envelopes and starts the challenge over. Your other challenges are untouched.", function(){
+    logSave(-envTotal(), "reset"); S.env.done = []; S.seen.env = [];
+    save(); renderEnv(); renderHero(); toast("Envelopes reset");
+  });
+};
+$("wkNextBtn").onclick = function(){
+  var n = nextWk();
+  if(n === null){ toast("All 52 weeks are done 🏆"); return; }
+  var el = document.querySelector('#wkGrid .cell[data-n="' + n + '"]');
+  toggleWk(n, el);
+  if(el) el.scrollIntoView({ block:"center", behavior:reduced() ? "auto" : "smooth" });
+};
+$("wkFlip").onclick = function(){
+  S.wk.flip = !S.wk.flip; save(); renderWk();
+  toast(S.wk.flip ? "Biggest weeks first" : "Smallest weeks first");
+};
+$("wkReset").onclick = function(){
+  ask("Reset the 52 weeks?", "This clears every week and starts the challenge over. Your other challenges are untouched.", function(){
+    logSave(-wkTotal(), "reset"); S.wk.done = []; S.seen.wk = [];
+    save(); renderWk(); renderHero(); toast("Weeks reset");
+  });
+};
+
+/* ---------- tabs ---------- */
+var PANES = { env:"p-env", wk:"p-wk", ns:"p-ns", goal:"p-goal" };
+var TABIDS = ["env","wk","ns","goal"];
+function setTab(t, focusPane){
+  if(!PANES[t]) t = "env";
+  S.tab = t; save();
+  Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
+    var on = b.dataset.tab === t;
+    b.setAttribute("aria-selected", on ? "true" : "false");
+    b.tabIndex = on ? 0 : -1;
+  });
+  Object.keys(PANES).forEach(function(k){ $(PANES[k]).hidden = (k !== t); });
+  if(t === "env") renderEnv();
+  if(t === "wk") renderWk();
+  if(t === "ns") renderNs();
+  if(t === "goal") renderGoal();
+  if(focusPane) $(PANES[t]).focus();
+}
+Array.prototype.forEach.call(document.querySelectorAll(".tab"), function(b){
+  b.onclick = function(){ setTab(b.dataset.tab); };
+  b.addEventListener("keydown", function(e){
+    var i = TABIDS.indexOf(b.dataset.tab), j = i;
+    if(e.key === "ArrowRight") j = (i + 1) % TABIDS.length;
+    else if(e.key === "ArrowLeft") j = (i - 1 + TABIDS.length) % TABIDS.length;
+    else if(e.key === "Home") j = 0;
+    else if(e.key === "End") j = TABIDS.length - 1;
+    else return;
+    e.preventDefault();
+    setTab(TABIDS[j]);
+    document.getElementById("t-" + TABIDS[j]).focus();
+  });
+});
+
+/* ---------- themes ---------- */
+var THEME_DEF = {
+  cosmic:   { name:"Cosmic",   sub:"Violet · dark",  light:false, bg:"#0d0b1e", card:"cosmic",
+              grad:"linear-gradient(135deg,#c77dff,#ff6eb4)",
+              chart:{ line:"#ff6eb4", top:"rgba(255,110,180,.45)", bot:"rgba(199,125,255,.04)", dot:"#ffd166" } },
+  daylight: { name:"Daylight", sub:"Violet · light", light:true,  bg:"#f7f3ff", card:"cosmic",
+              grad:"linear-gradient(135deg,#c77dff,#ff6eb4)",
+              chart:{ line:"#d11f79", top:"rgba(209,31,121,.30)", bot:"rgba(131,36,212,.03)", dot:"#c98a00" } },
+  midnight: { name:"Midnight", sub:"Blue · dark",    light:false, bg:"#0a111c", card:"midnight",
+              grad:"linear-gradient(135deg,#5aa2ff,#2ad4ee)",
+              chart:{ line:"#2ad4ee", top:"rgba(42,212,238,.42)", bot:"rgba(90,162,255,.04)", dot:"#f7c95c" } },
+  steel:    { name:"Steel",    sub:"Blue · light",   light:true,  bg:"#f1f5fa", card:"midnight",
+              grad:"linear-gradient(135deg,#5aa2ff,#2ad4ee)",
+              chart:{ line:"#0d7490", top:"rgba(13,116,144,.28)", bot:"rgba(20,102,204,.03)", dot:"#8a6100" } }
+};
+var THEME_ORDER = ["cosmic", "daylight", "midnight", "steel"];
+function themeDef(){ return THEME_DEF[S.theme] || THEME_DEF.cosmic; }
+
+function paintTheme(){
+  var t = themeDef();
+  document.documentElement.setAttribute("data-theme", S.theme);
+  var mt = document.querySelector('meta[name="theme-color"]');
+  if(mt) mt.setAttribute("content", t.bg);
+  $("btnTheme").setAttribute("title", "Choose your look · " + t.name);
+  $("btnTheme").setAttribute("aria-label", "Choose your look, currently " + t.name);
+  renderSwatches();
+  if($("progress").classList.contains("open")) requestAnimationFrame(drawChart);
+}
+function renderSwatches(){
+  var wrap = $("swList"); if(!wrap) return;
+  wrap.innerHTML = THEME_ORDER.map(function(k){
+    var t = THEME_DEF[k];
+    return '<button class="sw" data-theme="' + k + '" aria-pressed="' + (S.theme === k) + '">' +
+           '<span class="sw-dot" aria-hidden="true" style="background:' + t.grad +
+           ';box-shadow:inset 0 0 0 3px ' + t.bg + ',0 0 0 1px rgba(128,128,128,.35)"></span>' +
+           '<span class="sw-txt"><span class="sw-name">' + t.name + '</span>' +
+           '<span class="sw-sub">' + t.sub + '</span></span></button>';
+  }).join("");
+  Array.prototype.forEach.call(wrap.querySelectorAll(".sw"), function(btn){
+    btn.onclick = function(){
+      var k = btn.getAttribute("data-theme");
+      if(!THEME_DEF[k] || k === S.theme) return;
+      S.theme = k; save(); paintTheme();
+      toast(THEME_DEF[k].name + " it is 🎨");
+    };
+  });
+}
+$("btnTheme").onclick = function(){ renderSwatches(); openModal($("themePick")); };
+$("thClose").onclick = function(){ closeModal(); };
+
+/* ---------- welcome / help ---------- */
+$("btnHelp").onclick = function(){ openModal($("welcome")); };
+$("wClose").onclick = function(){
+  S.welcomed = true; save(); closeModal();
+};
+Array.prototype.forEach.call(document.querySelectorAll("#welcome .wc"), function(btn){
+  btn.onclick = function(){
+    S.welcomed = true; save();
+    closeModal();
+    setTab(btn.dataset.go, true);
+  };
+});
+
+/* ---------- modal plumbing (focus trap + scroll lock) ---------- */
+var openEl = null, lastFocus = null;
+var FOCUSABLE = 'button:not([disabled]),input:not([type="hidden"]),select,textarea,a[href],[tabindex]:not([tabindex="-1"])';
+function openModal(el){
+  lastFocus = document.activeElement;
+  openEl = el;
+  el.classList.add("open");
+  document.body.classList.add("lock");
+  var f = el.querySelectorAll(FOCUSABLE);
+  if(f.length) f[0].focus();
+}
+function closeModal(){
+  if(!openEl) return;
+  openEl.classList.remove("open");
+  openEl = null;
+  document.body.classList.remove("lock");
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+/* dismiss every modal at once — for flows (import/restore/wipe) that run
+   through a nested confirm dialog and should leave nothing open behind them */
+function closeAll(){
+  ["modal", "ask", "progress", "welcome", "themePick"].forEach(function(id){ $(id).classList.remove("open"); });
+  openEl = null; askFn = null;
+  document.body.classList.remove("lock");
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+document.addEventListener("keydown", function(e){
+  if(!openEl) return;
+  if(e.key === "Escape"){ e.preventDefault(); closeModal(); return; }
+  if(e.key !== "Tab") return;
+  var f = Array.prototype.filter.call(openEl.querySelectorAll(FOCUSABLE), function(el){
+    return el.offsetParent !== null || el === document.activeElement;
+  });
+  if(!f.length) return;
+  var first = f[0], lastF = f[f.length - 1];
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); lastF.focus(); }
+  else if(!e.shiftKey && document.activeElement === lastF){ e.preventDefault(); first.focus(); }
+});
+[["modal"],["ask"],["progress"]].forEach(function(p){
+  $(p[0]).addEventListener("click", function(e){ if(e.target === this) closeModal(); });
+});
+
+/* styled confirm — works where window.confirm is suppressed */
+var askFn = null;
+function ask(title, body, fn, yesLabel){
+  $("askTitle").textContent = title;
+  $("askBody").textContent = body;
+  $("askYes").textContent = yesLabel || "Yes, do it";
+  askFn = fn;
+  openModal($("ask"));
+}
+$("askNo").onclick = function(){ askFn = null; closeModal(); };
+$("askYes").onclick = function(){
+  var f = askFn; askFn = null; closeModal();
+  if(f) f();
+};
+
+/* ---------- backup / settings ---------- */
+$("btnData").onclick = function(){ openModal($("modal")); $("codeWrap").hidden = true; };
+$("doClose").onclick = closeModal;
+
+/* ---------- progress view: stats + chart ---------- */
+$("btnProg").onclick = function(){ openModal($("progress")); renderProgress(); };
+$("progClose").onclick = closeModal;
+function renderProgress(){
+  $("progTotal").textContent = money(allSaved());
+  $("progMonth").textContent = money(savedThisMonth());
+  var st = savingStreak();
+  $("progStreak").textContent = st.cur;
+  $("progM3").textContent = st.best > 1 ? "Best streak so far: " + st.best + " days" : "";
+  requestAnimationFrame(drawChart);
+}
+function drawChart(){
+  var c = $("progChart"), empty = $("chartEmpty");
+  var series = logSeries();
+  if(series.length){ series = [{ day: series[0].day, cum: 0 }].concat(series); }
+  var W = Math.max(20, c.parentElement.clientWidth - 16), H = c.parentElement.clientHeight - 16;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  c.width = W * dpr; c.height = H * dpr; c.style.width = W + "px"; c.style.height = H + "px";
+  var x = c.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0); x.clearRect(0, 0, W, H);
+  if(series.length < 2 || allSaved() <= 0){ empty.hidden = false; return; }
+  empty.hidden = true;
+  var n = series.length, maxv = series[n - 1].cum || 1;
+  var pL = 6, pR = 6, pT = 12, pB = 6;
+  var px = function(i){ return pL + (n === 1 ? 0 : (i / (n - 1)) * (W - pL - pR)); };
+  var py = function(v){ return pT + (1 - v / maxv) * (H - pT - pB); };
+  var g = x.createLinearGradient(0, pT, 0, H);
+  var ch = themeDef().chart;
+  g.addColorStop(0, ch.top); g.addColorStop(1, ch.bot);
+  x.beginPath(); x.moveTo(px(0), py(series[0].cum));
+  for(var i = 1; i < n; i++) x.lineTo(px(i), py(series[i].cum));
+  x.lineTo(px(n - 1), H - pB); x.lineTo(px(0), H - pB); x.closePath();
+  x.fillStyle = g; x.fill();
+  x.beginPath();
+  for(var j = 0; j < n; j++){ var xx = px(j), yy = py(series[j].cum); j ? x.lineTo(xx, yy) : x.moveTo(xx, yy); }
+  x.strokeStyle = ch.line; x.lineWidth = 2.5; x.lineJoin = "round"; x.stroke();
+  x.beginPath(); x.arc(px(n - 1), py(series[n - 1].cum), 4.5, 0, 6.2832); x.fillStyle = ch.dot; x.fill();
+}
+
+/* ---------- shareable progress card (canvas → PNG) ---------- */
+function radialBlob(x, cx, cy, r, col){
+  var g = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+  g.addColorStop(0, col); g.addColorStop(1, "rgba(0,0,0,0)");
+  x.fillStyle = g; x.fillRect(0, 0, 1080, 1080);
+}
+/* the shared card always uses a dark, on-brand background — it lands in other
+   people's feeds, not in the app — but it follows whichever palette is chosen */
+var CARD = {
+  cosmic:   { bg1:"#161036", bg2:"#0c0a1a", b1:"rgba(199,125,255,.34)", b2:"rgba(255,110,180,.26)",
+              b3:"rgba(0,229,200,.12)", logo:"#ff8ecb", eyebrow:"#b6a8d6", g1:"#c77dff", g2:"#ff6eb4",
+              sub:"#c3b6e0", streak:"#ffd166", tag:"#8f82b0", foot:"#6f6392" },
+  midnight: { bg1:"#0f1c2e", bg2:"#070d18", b1:"rgba(90,162,255,.34)", b2:"rgba(42,212,238,.24)",
+              b3:"rgba(52,211,153,.12)", logo:"#63b8ff", eyebrow:"#a8bfd8", g1:"#5aa2ff", g2:"#2ad4ee",
+              sub:"#b6c8e0", streak:"#f7c95c", tag:"#84a0c0", foot:"#6b86a4" }
+};
+$("doShareCard").onclick = function(){
+  var K = CARD[themeDef().card] || CARD.cosmic;
+  var Z = 1080, c = document.createElement("canvas"); c.width = Z; c.height = Z;
+  var x = c.getContext("2d");
+  var bg = x.createLinearGradient(0, 0, Z, Z); bg.addColorStop(0, K.bg1); bg.addColorStop(1, K.bg2);
+  x.fillStyle = bg; x.fillRect(0, 0, Z, Z);
+  radialBlob(x, Z * 0.18, Z * 0.10, Z * 0.55, K.b1);
+  radialBlob(x, Z * 0.92, Z * 0.16, Z * 0.5, K.b2);
+  radialBlob(x, Z * 0.5, Z * 1.04, Z * 0.55, K.b3);
+  var F = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+  x.textAlign = "center";
+  x.fillStyle = K.logo; x.font = "800 52px " + F; x.fillText("Stash ✦", Z / 2, 150);
+
+  var goaled = hasGoal();
+  x.fillStyle = K.eyebrow; x.font = "800 30px " + F;
+  var eyebrow = goaled && S.goal.name ? ("SAVED TOWARD " + S.goal.name.toUpperCase()) : "TOTAL SAVED";
+  if(eyebrow.length > 34) eyebrow = eyebrow.slice(0, 33) + "…";
+  x.fillText(spaced(eyebrow), Z / 2, 300);
+
+  var amt = money(goaled ? goalSaved() : allSaved());
+  var size = 168; x.font = "800 " + size + "px " + F;
+  while(x.measureText(amt).width > Z - 140 && size > 70){ size -= 6; x.font = "800 " + size + "px " + F; }
+  var ag = x.createLinearGradient(Z * 0.2, 0, Z * 0.8, 0); ag.addColorStop(0, K.g1); ag.addColorStop(1, K.g2);
+  x.fillStyle = ag; x.fillText(amt, Z / 2, 470);
+
+  var yy = 470;
+  if(goaled && goalTarget() > 0){
+    var pct = goalPct();
+    x.fillStyle = K.sub; x.font = "600 34px " + F;
+    x.fillText(Math.round(pct) + "% of " + money(goalTarget()), Z / 2, 560);
+    var bw = 720, bx = (Z - bw) / 2, byy = 600, bh = 26;
+    x.fillStyle = "rgba(255,255,255,.10)"; roundRect(x, bx, byy, bw, bh, 13); x.fill();
+    var pg = x.createLinearGradient(bx, 0, bx + bw, 0); pg.addColorStop(0, K.g1); pg.addColorStop(1, K.g2);
+    x.fillStyle = pg; roundRect(x, bx, byy, Math.max(bh, bw * pct / 100), bh, 13); x.fill();
+    yy = 690;
+  }
+  var st = savingStreak();
+  if(st.cur > 0){ x.fillStyle = K.streak; x.font = "800 42px " + F; x.fillText("🔥 " + st.cur + "-day saving streak", Z / 2, yy + 110); }
+
+  x.fillStyle = K.tag; x.font = "700 30px " + F;
+  x.fillText("Saving, made fun.", Z / 2, 940);
+  x.fillStyle = K.foot; x.font = "700 26px " + F;
+  x.fillText("Stash ✦  ·  DreamsToDone", Z / 2, 1000);
+
+  try{
+    var url = c.toDataURL("image/png");
+    var a = document.createElement("a"); a.href = url; a.download = "my-stash-progress.png";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    toast("Progress card saved 📸");
+  }catch(e){ toast("Could not make the card on this browser"); }
+};
+function spaced(s){ return s.split("").join(" "); }
+function roundRect(x, X, Y, W, H, r){ r = Math.min(r, H / 2, W / 2); x.beginPath();
+  x.moveTo(X + r, Y); x.arcTo(X + W, Y, X + W, Y + H, r); x.arcTo(X + W, Y + H, X, Y + H, r);
+  x.arcTo(X, Y + H, X, Y, r); x.arcTo(X, Y, X + W, Y, r); x.closePath(); }
+
+/* ---------- cross-device transfer code (gzip + base64, no backend) ---------- */
+function b64FromBytes(u8){ var s = ""; for(var i = 0; i < u8.length; i++) s += String.fromCharCode(u8[i]); return btoa(s); }
+function bytesFromB64(b){ var s = atob(b), u = new Uint8Array(s.length); for(var i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }
+function makeCode(str){
+  if(typeof CompressionStream === "function"){
+    var cs = new CompressionStream("gzip");
+    var stream = new Blob([str]).stream().pipeThrough(cs);
+    return new Response(stream).arrayBuffer().then(function(buf){ return "STASH1:" + b64FromBytes(new Uint8Array(buf)); });
+  }
+  return Promise.resolve("STASH0:" + btoa(unescape(encodeURIComponent(str))));
+}
+function readCode(code){
+  code = String(code || "").trim();
+  if(code.indexOf("STASH1:") === 0 && typeof DecompressionStream === "function"){
+    var ds = new DecompressionStream("gzip");
+    var stream = new Blob([bytesFromB64(code.slice(7))]).stream().pipeThrough(ds);
+    return new Response(stream).text();
+  }
+  if(code.indexOf("STASH0:") === 0){ return Promise.resolve(decodeURIComponent(escape(atob(code.slice(7))))); }
+  return Promise.resolve(decodeURIComponent(escape(atob(code)))); /* tolerate raw base64 */
+}
+$("doMakeCode").onclick = function(){
+  writeNow();
+  makeCode(JSON.stringify(S)).then(function(code){
+    var box = $("codeBox"); box.readOnly = true; box.value = code;
+    $("codeWrap").hidden = false; $("doCopyCode").hidden = false; $("doImportCode").hidden = true;
+    box.focus(); box.select();
+    toast("Transfer code ready. Copy it to your other device");
+  }).catch(function(){ toast("Could not make a code on this browser"); });
+};
+$("doPasteCode").onclick = function(){
+  var box = $("codeBox"); box.readOnly = false; box.value = "";
+  $("codeWrap").hidden = false; $("doCopyCode").hidden = true; $("doImportCode").hidden = false;
+  box.setAttribute("placeholder", "Paste your transfer code here…"); box.focus();
+};
+$("doCopyCode").onclick = function(){
+  var box = $("codeBox"); box.select();
+  var done = function(){ toast("Code copied 📋"); };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(box.value).then(done, function(){ try{ document.execCommand("copy"); done(); }catch(e){ toast("Select the code and copy it"); } });
+  } else { try{ document.execCommand("copy"); done(); }catch(e){ toast("Select the code and copy it"); } }
+};
+$("doImportCode").onclick = function(){
+  var code = $("codeBox").value.trim();
+  if(!code){ toast("Paste a code first"); return; }
+  readCode(code).then(function(json){
+    var o = JSON.parse(json);
+    if(!isPlain(o)) throw 0;
+    ask("Bring this data in?", "Everything currently in Stash will be replaced by the transferred data. This cannot be undone.", function(){
+      S = merge(fresh(), o); clean(); writeNow();
+      paintTheme(); $("curSel").value = S.cur;
+      setTab(S.tab || "env"); renderHero();
+      closeAll(); bigCelebrate("goal"); toast("Brought across 🎉");
+    }, "Replace everything");
+  }).catch(function(){ toast("That code could not be read. Check you copied all of it"); });
+};
+
+$("curSel").addEventListener("change", function(){
+  if(CURS.indexOf(this.value) === -1) return;
+  S.cur = this.value; save();
+  renderEnv(); renderWk(); renderNs(); renderGoal(); renderHero();
+});
+$("doExport").onclick = function(){
+  try{
+    writeNow();
+    var blob = new Blob([JSON.stringify(S, null, 2)], { type:"application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "stash-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+    toast("Backup downloaded ⬇");
+  }catch(e){ toast("Export failed on this browser"); }
+};
+$("doImport").onclick = function(){ $("fileIn").click(); };
+$("fileIn").addEventListener("change", function(){
+  var f = this.files && this.files[0];
+  this.value = "";
+  if(!f) return;
+  var rd = new FileReader();
+  rd.onerror = function(){ toast("That file could not be read"); };
+  rd.onload = function(){
+    var o;
+    try{ o = JSON.parse(rd.result); }catch(err){ toast("That file could not be read"); return; }
+    if(!isPlain(o)){ toast("That file could not be read"); return; }
+    ask("Restore this backup?", "Everything currently in Stash will be replaced by the contents of this file. This cannot be undone.", function(){
+      S = merge(fresh(), o);
+      clean();
+      writeNow();
+      paintTheme();
+      $("curSel").value = S.cur;
+      setTab(S.tab || "env"); renderHero();
+      closeAll(); burst(120); toast("Backup restored 🎉");
+    }, "Replace everything");
+  };
+  rd.readAsText(f);
+});
+$("doPrint").onclick = function(){
+  buildPrintHead();
+  closeModal();
+  setTimeout(function(){ window.print(); }, 250);
+};
+$("doWipe").onclick = function(){
+  ask("Erase everything?", "Every challenge, every deposit and every no-spend day will be deleted from this browser. Export a backup first if you are unsure.", function(){
+    ask("Really erase it all?", "Last check. This cannot be undone.", function(){
+      S = fresh();
+      if(CAN_STORE){ try{ window.localStorage.removeItem(KEY); }catch(e){} }
+      paintTheme();
+      $("curSel").value = S.cur;
+      setTab("env"); renderHero(); closeAll(); toast("Everything erased");
+    }, "Erase everything");
+  }, "Continue");
+};
+
+/* ---------- print summary header ---------- */
+function buildPrintHead(){
+  var runs = streaks();
+  var goalLabel = "My goal" + (S.goal.name ? " · " + S.goal.name : "");
+  var isBingoGoal = S.goal.style === "bingo";
+  var goalUnits = isBingoGoal ? 24 : S.goal.plan.amts.length;
+  var goalDetail = S.goal.plan.amts.length
+    ? (TYPE_NAME[S.goal.style] || "Climb") + " · " + S.goal.plan.done.length + " / " + goalUnits + (isBingoGoal ? " squares" : " boxes") +
+      (S.goal.deadline ? " · by " + new Date(S.goal.deadline + "T00:00:00").toLocaleDateString(undefined, { month:"short", day:"numeric", year:"numeric" }) : "")
+    : "not set";
+  var rows = [
+    ["100 Envelope Challenge", S.env.done.length + " / 100 filled", money(envTotal())],
+    ["52 Week Challenge", S.wk.done.length + " / 52 ticked", money(wkTotal())],
+    [goalLabel, goalDetail, money(goalSaved())],
+    ["No-spend days", nsCount() + " days · best run " + runs.best, money(nsTotal()) + " not spent"]
+  ];
+  var html = '<h2 style="margin:0 0 4px">Stash · savings summary</h2>' +
+    '<p style="margin:0 0 10px;color:#555;font-size:.85rem">' +
+    new Date().toLocaleDateString(undefined, { year:"numeric", month:"long", day:"numeric" }) +
+    " · Total saved " + money(allSaved()) + "</p><table style=\"width:100%;border-collapse:collapse;font-size:.85rem\">";
+  rows.forEach(function(r){
+    html += '<tr><td style="padding:4px 0;border-bottom:1px solid #ddd">' + esc(r[0]) +
+            '</td><td style="padding:4px 0;border-bottom:1px solid #ddd;color:#555">' + esc(r[1]) +
+            '</td><td style="padding:4px 0;border-bottom:1px solid #ddd;text-align:right;font-weight:700">' + esc(r[2]) + "</td></tr>";
+  });
+  $("printHead").innerHTML = html + "</table>";
+}
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c];
+  });
+}
+window.addEventListener("beforeprint", buildPrintHead);
+
+/* ---------- storage warning banner ---------- */
+function storeBanner(){
+  if(CAN_STORE) return;
+  $("storeWarn").innerHTML =
+    '<div class="warn"><b>Heads up: this browser is not saving.</b><br>' +
+    'Stash cannot write to storage here, which usually means private browsing mode ' +
+    'or blocked site data. You can still use everything, but your progress will vanish ' +
+    'when you close the tab. Open Stash in a normal window, or export a backup before you leave.</div>';
+}
+
+/* ---------- demo seed ---------- */
+function seed(){
+  S.cur = "$";
+  for(var i = 1; i <= 34; i++){ if(i % 3 !== 0) S.env.done.push(i); }
+  for(var w = 1; w <= 17; w++){ S.wk.done.push(w); }
+  S.ns.rate = 28;
+  var d = new Date(); S.ns.ym = ymKey(d);
+  var total = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  var upto = Math.min(d.getDate(), total);
+  for(var day = 1; day <= upto; day++){
+    var key = d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(day);
+    var r = day % 9;
+    S.ns.days[key] = (r === 4) ? "spend" : (r === 7) ? "ess" : "no";
+  }
+  S.goal.name = "Japan trip 2027";
+  S.goal.target = 3000;
+  var now = Date.now(), DAY = 86400000;
+  var startD = new Date(now - DAY * 30), endD = new Date(now + DAY * 90);
+  S.goal.style = "gentle";
+  S.goal.start = dKey(startD);
+  S.goal.deadline = dKey(endD);
+  S.goal.style = "climb";
+  S.goal.plan = { amts: genPlan(3000, "climb", 17), done: [], seenLines: [] };
+  for(var bi = 0; bi < 16; bi++) S.goal.plan.done.push(bi); /* first 16 boxes ticked */
+  S.goal.deps = [
+    { a:120, n:"Sold old headphones", d:now - DAY * 24 },
+    { a:65,  n:"Cashback + refund", d:now - DAY * 12 }
+  ];
+  S.seen = { env:[10,25], wk:[10,25,50], goal:[25] };
+  /* synthesise a dated activity log so the progress chart + streak look alive */
+  (function(){
+    var events = [];
+    S.env.done.forEach(function(n){ events.push(n); });
+    S.wk.done.forEach(function(n){ events.push(n); });
+    for(var gi = 0; gi < S.goal.plan.done.length; gi++){ events.push(S.goal.plan.amts[S.goal.plan.done[gi]]); }
+    S.log = [];
+    /* recent days first (incl. today) so the current streak is real; skip some older days */
+    var days = [];
+    for(var d = 0; d <= 44 && days.length * 2 < events.length + 2; d++){
+      if(d > 6 && d % 4 === 0) continue;   /* keep the last 7 days consecutive */
+      days.push(d);
+    }
+    var per = Math.max(1, Math.ceil(events.length / days.length)), e = 0;
+    days.forEach(function(d){
+      for(var k = 0; k < per && e < events.length; k++){
+        S.log.push({ d: now - DAY * d + (per - k) * 3600000, a: events[e], k: "seed" });
+        e++;
+      }
+    });
+    S.goal.deps.forEach(function(dp){ S.log.push({ d: dp.d, a: dp.a, k: "dep" }); });
+    S.log.sort(function(a, b){ return a.d - b.d; });
+  })();
+  S.tab = "goal";
+}
+
+/* ---------- boot ---------- */
+load();
+if(SEED && (!CAN_STORE || !window.localStorage.getItem(KEY))) seed();
+clean();
+storeBanner();
+paintTheme();
+$("curSel").value = S.cur;
+/* record milestones already passed without firing confetti on load */
+checkMiles("env", (envTotal() / ENV_TARGET) * 100, true);
+checkMiles("wk", (wkTotal() / WK_TARGET) * 100, true);
+if(S.goal.target > 0) checkMiles("goal", goalPct(), true);
+setTab(S.tab || "env");
+renderHero();
+
+/* first-run welcome: only for a genuinely empty, never-welcomed file.
+   Anyone with existing progress is quietly marked as already welcomed. */
+var hasData = allSaved() > 0 || nsCount() > 0 || S.goal.deps.length > 0 ||
+              !!S.goal.name || S.goal.target > 0 || S.goal.plan.amts.length > 0;
+if(hasData && !S.welcomed){ S.welcomed = true; save(); }
+else if(!S.welcomed){
+  setTimeout(function(){ openModal($("welcome")); }, 350);
+}
+
+})();
+</script>
+
+<script>
+/* ---------- PWA layer (added by build-pwa.py, not part of the app) ---------- */
+(function(){
+  "use strict";
+  var A2HS_KEY = "dreamstodone.stash.a2hs";   /* separate from the app's own key */
+
+  function standalone(){
+    return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches)
+        || window.navigator.standalone === true;
+  }
+  function store(k, v){ try{ window.localStorage.setItem(k, v); }catch(e){} }
+  function read(k){ try{ return window.localStorage.getItem(k); }catch(e){ return null; } }
+
+  /* ---------- service worker ---------- */
+  var deferredPrompt = null;
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("./sw.js").then(function(reg){
+        reg.addEventListener("updatefound", function(){
+          var sw = reg.installing;
+          if(!sw) return;
+          sw.addEventListener("statechange", function(){
+            /* a controller already exists, so this is an update rather than a first install */
+            if(sw.state === "installed" && navigator.serviceWorker.controller) showUpdate();
+          });
+        });
+      }).catch(function(){ /* offline or unsupported, the app still works */ });
+    });
+  }
+
+  function showUpdate(){
+    if(document.getElementById("pwaUpdate")) return;
+    var bar = document.createElement("div");
+    bar.id = "pwaUpdate";
+    bar.setAttribute("role", "status");
+    bar.style.cssText = "position:fixed;left:50%;transform:translateX(-50%);z-index:101;" +
+      "bottom:calc(88px + env(safe-area-inset-bottom));background:var(--surface3,#2d2558);" +
+      "border:1px solid var(--purple,#c77dff);color:var(--text,#f0e6ff);padding:11px 16px;" +
+      "border-radius:99px;font-weight:700;font-size:.92rem;display:flex;align-items:center;gap:12px;" +
+      "box-shadow:var(--shadow,0 8px 32px rgba(5,3,15,.7));max-width:calc(100vw - 32px)";
+    var msg = document.createElement("span");
+    msg.textContent = "A new version is ready.";
+    var btn = document.createElement("button");
+    btn.textContent = "Refresh";
+    btn.style.cssText = "background:var(--grad,linear-gradient(135deg,#c77dff,#ff6eb4));" +
+      "color:var(--ink,#1a1535);font-weight:800;font-size:.82rem;padding:7px 13px;border:none;" +
+      "border-radius:99px;cursor:pointer;flex-shrink:0";
+    btn.onclick = function(){ window.location.reload(); };
+    bar.appendChild(msg); bar.appendChild(btn);
+    document.body.appendChild(bar);
+  }
+
+  /* ---------- add to home screen ---------- */
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+    var b = document.getElementById("a2hsInstall");
+    if(b) b.hidden = false;
+  });
+
+  function isIOS(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent)
+        || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  function buildCard(){
+    if(standalone()) return;                 /* already installed, nothing to explain */
+    if(read(A2HS_KEY) === "1") return;       /* dismissed before */
+    var wrap = document.querySelector(".wrap");
+    var foot = wrap && wrap.querySelector("footer");
+    if(!wrap || !foot) return;
+
+    var card = document.createElement("div");
+    card.className = "card";
+    card.id = "a2hsCard";
+    card.style.marginTop = "6px";
+
+    var h = document.createElement("h2");
+    h.textContent = "📲 Keep Stash one tap away";
+    card.appendChild(h);
+
+    var p = document.createElement("p");
+    p.className = "hint";
+    p.style.marginBottom = "12px";
+    p.textContent = isIOS()
+      ? "Add it to your home screen and it opens like an app, full screen and offline. In Safari, tap the Share button at the bottom, scroll down, then tap Add to Home Screen."
+      : "Add it to your home screen and it opens like an app, full screen and offline. Your saved progress stays exactly where it is.";
+    card.appendChild(p);
+
+    var row = document.createElement("div");
+    row.className = "btn-row";
+
+    /* beforeinstallprompt does not fire in every browser, so the button always
+       stays visible and falls back to telling people where the menu item is,
+       rather than being hidden or doing nothing */
+    var fallback = document.createElement("p");
+    fallback.className = "hint";
+    fallback.id = "a2hsHint";
+    fallback.style.cssText = "margin:12px 0 0";
+    fallback.hidden = true;
+    fallback.textContent = "Open your browser menu, then choose Install Stash, or Add to Home screen.";
+
+    if(!isIOS()){
+      var install = document.createElement("button");
+      install.className = "btn";
+      install.id = "a2hsInstall";
+      install.textContent = "✧ Add to home screen";
+      install.onclick = function(){
+        if(!deferredPrompt){ fallback.hidden = false; return; }
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(res){
+          if(res && res.outcome === "accepted"){
+            store(A2HS_KEY, "1");
+            if(card.parentNode) card.parentNode.removeChild(card);
+          }
+          deferredPrompt = null;
+        });
+      };
+      row.appendChild(install);
+    }
+
+    var no = document.createElement("button");
+    no.className = "btn-ghost";
+    no.textContent = "No thanks";
+    no.style.marginLeft = "auto";
+    no.onclick = function(){
+      store(A2HS_KEY, "1");
+      if(card.parentNode) card.parentNode.removeChild(card);
+    };
+    row.appendChild(no);
+    card.appendChild(row);
+    card.appendChild(fallback);
+
+    wrap.insertBefore(card, foot);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", buildCard);
+  } else { buildCard(); }
+})();
+</script>
+</body>
+</html>
